@@ -4,8 +4,8 @@ spring:
   druid:
     driverClassName: oracle.jdbc.OracleDriver
     url: jdbc:oracle:thin:@localhost:1521:XE
-    username: hr
-    password: hr
+    username: zhihu
+    password: zhihu
     maxActive: 30 #最小连接数
     minIdle: 5 #最大连接数
     maxWait: 10000 #获取连接的的最大等待时间
