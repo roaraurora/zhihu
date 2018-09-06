@@ -1,5 +1,11 @@
 server:
-  port: 8090
+  port: 443
+  ssl:
+    key-alias: tomcat
+    key-store: classpath:keystore.p12
+    key-store-password: tomcat
+    key-store-type: PKCS12
+
 spring:
   druid:
     driverClassName: oracle.jdbc.OracleDriver
@@ -11,6 +17,18 @@ spring:
     maxWait: 10000 #获取连接的的最大等待时间
     timeBetweenEvictionRunsMillis: 6000 #空闲连接检查时间间隔
     minEvictableIdleTimeMillis: 300000 #空闲连接的最小空闲时间pompokm,
+  mail:
+    host: smtp.office365.com
+    username: roaraurora@outlook.com
+    password: 6.62607004 #普朗克常数
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+            required: true
+
+
 mybatis:
   type-aliases-package: com.zhihu.demo.model #给包中的类注册别名，注册后可以直接使用类名，而不用使用全限定的类名（就是不用包含包名）。
   configuration:

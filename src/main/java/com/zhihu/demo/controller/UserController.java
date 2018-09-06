@@ -80,8 +80,7 @@ public class UserController {
     }
 
     /**
-     * 需要一个401地址用于跳转
-     * Filter中token验证失败时不能直接返回401信息 而是跳转到这个路由
+     * 可用于重定向
      */
     @RequestMapping(path = "/401")
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
