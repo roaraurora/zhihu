@@ -1,11 +1,12 @@
 package com.zhihu.demo.controller;
 
 import com.zhihu.demo.exception.GlobalException;
-import com.zhihu.demo.model.User;
 import com.zhihu.demo.result.CodeMsg;
 import com.zhihu.demo.result.Result;
 import com.zhihu.demo.service.UserService;
-import com.zhihu.demo.util.JWTUtil;
+import com.zhihu.demo.util.ConstantBean;
+import com.zhihu.demo.vo.LoginVo;
+import com.zhihu.demo.vo.TokenVo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -18,28 +19,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.Map;
 
 @RestController
 public class UserController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final UserService userService;
+    private UserService userService;
+
+    private ConstantBean constantBean;
 
     @Autowired
-    public UserController(UserService userService) {
+    public void setConstantBean(ConstantBean constantBean) {
+        this.constantBean = constantBean;
+    }
+
+    @Autowired
+    public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
+    /**
+     * 用户登录
+     * @param loginVo 登录数据对象
+     */
     @PostMapping("/login")
-    public Result<String> login(@RequestParam("username") String username,
-                                @RequestParam("password") String password) throws GlobalException{
-        User user = userService.getUserByUsername(username);
-        logger.error("UserController.login => "+user.getPassword());
-        if (user.getPassword().equals(password)) {
-            return Result.success(JWTUtil.sign(username, password));
-        } else {
-            throw new GlobalException(CodeMsg.UNAUTHORIZED);
-        }
+    public Result<TokenVo> login(@RequestBody @Valid LoginVo loginVo) throws GlobalException {
+        TokenVo tokenVo = userService.login(loginVo);
+        return Result.success(tokenVo);
     }
 
     @GetMapping("/article")
@@ -85,6 +93,7 @@ public class UserController {
     @RequestMapping(path = "/401")
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public Result<String> unauthorized() {
+        logger.info("constant :salt => "+constantBean.getSalt()+" refresh => "+constantBean.getRefresh()+" expire => "+constantBean.getExpire());
         return Result.error(CodeMsg.UNAUTHORIZED);
     }
 

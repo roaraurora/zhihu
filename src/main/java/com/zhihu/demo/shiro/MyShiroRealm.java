@@ -1,11 +1,10 @@
 package com.zhihu.demo.shiro;
 
-import com.zhihu.demo.exception.GlobalException;
+import com.zhihu.demo.model.Role;
 import com.zhihu.demo.model.User;
-import com.zhihu.demo.result.CodeMsg;
+import com.zhihu.demo.service.RoleService;
 import com.zhihu.demo.service.UserService;
 import com.zhihu.demo.util.JWTUtil;
-import jdk.nashorn.internal.objects.Global;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -30,6 +29,13 @@ public class MyShiroRealm extends AuthorizingRealm {
 
     private UserService userService;
 
+    private RoleService roleService;
+
+    @Autowired
+    public void setRoleService(RoleService roleService) {
+        this.roleService = roleService;
+    }
+
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
@@ -50,39 +56,32 @@ public class MyShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        String username = JWTUtil.getUsername(principalCollection.toString());
-        User user = userService.getUserByUsername(username);
-        logger.warn("MyShiroRealm.doGetAuthorizationInfo => " + user.getUsername());
+        String email = JWTUtil.getEmail(principalCollection.toString());
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         //设置用户角色
-        simpleAuthorizationInfo.addRole(user.getRole());
+        Role role = roleService.getRoleByUser(email);
+        simpleAuthorizationInfo.addRole(role.getRoleName());
         //设置用户权限
-        logger.warn(user.getPermission() + user.getRole());
-        Set<String> permission = new HashSet<>(Arrays.asList(user.getPermission().split(",")));
+        Set<String> permission = new HashSet<>(Arrays.asList(role.getPermission().split(",")));
         simpleAuthorizationInfo.addStringPermissions(permission);
         return simpleAuthorizationInfo;
     }
 
     /**
-     * 检验用户名密码是否正确
      * @throws AuthenticationException => ShiroException的子类 会被@GlobalExceptionHandler.handle401 所捕获
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         String token = (String) authenticationToken.getCredentials();
-        String username = JWTUtil.getUsername(token);
-        if (username == null) {
+        String email = JWTUtil.getEmail(token);
+        if (email == null) {
             throw new AuthenticationException("token invalid");
         }
-        logger.warn("Enter doGetAuthenticationInfo");
-        User user = userService.getUserByUsername(username);
-        if (user == null) {
-            throw new AuthenticationException("Username or password error");
-        }
-        boolean isCorrect = JWTUtil.verify(token, username, user.getPassword());
+        User user = userService.getUserByEmail(email);
+        boolean isCorrect = JWTUtil.verify(token, email, user.getPassword());
         if (!isCorrect) {
             logger.error("MyShiroRealm.doGetAuthenticationInfo => verify " + false);
-            throw new AuthenticationException("Username or password error");//不管你token咋错了 都当作未认证/认证失败
+            throw new AuthenticationException("Email or password error");//不管你token咋错了 都当作未认证/认证失败
         }
         return new SimpleAuthenticationInfo(token, token, "my_realm");
     }

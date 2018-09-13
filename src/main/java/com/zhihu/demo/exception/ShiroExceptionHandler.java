@@ -3,6 +3,8 @@ package com.zhihu.demo.exception;
 import com.zhihu.demo.result.CodeMsg;
 import com.zhihu.demo.result.Result;
 import org.apache.shiro.authc.AuthenticationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,14 +22,19 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 public class ShiroExceptionHandler implements ErrorController {
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Override
     public String getErrorPath() {
         return "/error";
     }
 
     @RequestMapping(value = "/error")
-    public Result<Object> error(HttpServletResponse response, HttpServletRequest request){
+    public Result<Object> error(HttpServletResponse response, HttpServletRequest request) {
         Exception exception = (Exception) request.getAttribute("javax.servlet.error.exception");
+        if (exception == null) {
+            throw new GlobalException(new CodeMsg(response.getStatus(), "Exception send to ErrorController"));
+        }
         Throwable cause = exception.getCause();
         if (cause instanceof AuthenticationException) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());

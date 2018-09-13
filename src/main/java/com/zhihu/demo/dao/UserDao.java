@@ -1,6 +1,5 @@
 package com.zhihu.demo.dao;
 
-
 import com.zhihu.demo.model.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public interface UserDao {
 
-    @Select("select*from temp_user where username=#{username}")
-    User selectUserByUsername(@Param("username") String username);
+    @Select("select*from users where email=#{email}")
+    User selectUserByEmail(@Param("email") String email);
+
 }

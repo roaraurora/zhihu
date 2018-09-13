@@ -1,28 +1,43 @@
-create table temp_user (
-  user_id    number        not null,
-  username   varchar2(100) not null,
-  password   varchar2(100) not null,
-  role       varchar2(100) not null,
-  permission varchar2(100) not null
+create table users (
+  user_id  number        not null,
+  email    varchar2(100) not null,
+  password varchar2(100) not null,
+  username varchar2(100) not null,
+  role_id  number        not null
 );
 
-comment on table temp_user
-is 'test jwt auth user table';
+comment on table users
+is '系统用户表';
 
-comment on column temp_user.user_id
-is 'user id';
-comment on column temp_user.username
-is 'username';
-comment on column temp_user.password
-is 'password';
-comment on column temp_user.role
-is 'role';
-comment on column temp_user.permission
-is 'permission';
+comment on column users.user_id
+is '用户ID';
+comment on column users.email
+is '用户邮箱 登录用';
+comment on column users.username
+is '用户名';
+comment on column users.password
+is '用户密码';
+comment on column users.role_id
+is '用户对应的系统角色的id';
 
-alter table temp_user
-  add constraint zhihu_user_pk primary key (user_id)
+-- 主键约束
+alter table users
+  add constraint zhihu_users_pk primary key (user_id)
   using index tablespace zhihu
   pctfree 10
   initrans 2
   maxtrans 255;
+
+-- 外键约束 级联删除
+ALTER TABLE users
+  ADD CONSTRAINT FK_Users_role_id FOREIGN KEY (role_id)
+REFERENCES role (role_id)
+on delete cascade;
+
+-- 唯一性约束
+alter table users add constraint UNIQUE_USER_EMAIL unique (email);
+
+create sequence users_s
+  increment by 1
+  start with 1000
+  maxvalue 999999999;

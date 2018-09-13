@@ -1,10 +1,9 @@
 package com.zhihu.demo.shiro;
 
-import com.zhihu.demo.exception.GlobalException;
-import com.zhihu.demo.result.CodeMsg;
+import com.zhihu.demo.util.JWTUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.slf4j.Logger;
@@ -33,12 +32,17 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
     }
 
     @Override
-    protected boolean executeLogin(ServletRequest request, ServletResponse response) {
+    protected boolean executeLogin(ServletRequest request, ServletResponse response) throws AuthenticationException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         String authorization = httpServletRequest.getHeader("Authorization");
         JWTToken token = new JWTToken(authorization);
         Subject subject = SecurityUtils.getSubject();
         subject.login(token); //token verify失败时抛出 AuthenticationException异常
+        String newToken = JWTUtil.refreshToken(authorization);
+        if (!StringUtils.isEmpty(newToken)) {
+            httpServletResponse.setHeader("access_token", newToken);
+        }
         return true;
     }
 
@@ -63,6 +67,11 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
         httpServletResponse.setHeader("Access-Control-Allow-Origin", httpServletRequest.getHeader("Origin"));
         httpServletResponse.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS,PUT,DELETE");
         httpServletResponse.setHeader("Access-Control-Allow-Headers", httpServletRequest.getHeader("Access-Control-Request-Headers"));
+        logger.warn(httpServletRequest.getRequestURI());
+        if (httpServletRequest.getRequestURI().equals("/endpoint/info")) {
+            //sockjs 需要这个字段
+            httpServletResponse.setHeader("Access-Control-Allow-Credentials", "true");
+        }
         //跨域资源请求的第一个option请求 直接返回OK 200
         if (httpServletRequest.getMethod().equals(RequestMethod.OPTIONS.name())) {
             httpServletResponse.setStatus(HttpStatus.OK.value());

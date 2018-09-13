@@ -1,6 +1,5 @@
 package com.zhihu.demo.service;
 
-import com.zhihu.demo.shiro.MyShiroRealm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ import javax.mail.internet.MimeMessage;
 
 @Service
 public class MailService {
-    private static final Logger logger = LoggerFactory.getLogger(MyShiroRealm.class);
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private JavaMailSender sender;
 

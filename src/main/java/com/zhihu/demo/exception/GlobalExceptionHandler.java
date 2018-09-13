@@ -4,6 +4,7 @@ import com.zhihu.demo.result.CodeMsg;
 import com.zhihu.demo.result.Result;
 import org.apache.shiro.ShiroException;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -29,6 +30,8 @@ public class GlobalExceptionHandler {
         if (e instanceof GlobalException) {
             GlobalException exception = (GlobalException) e;
             return Result.error(exception.getCodeMsg());
+        } else if (e instanceof BindException) {
+            return Result.error(CodeMsg.VO_ERR);
         } else {
             return Result.error(CodeMsg.SERVER_ERROR);
         }

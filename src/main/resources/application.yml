@@ -1,10 +1,11 @@
 server:
-  port: 443
-  ssl:
-    key-alias: tomcat
-    key-store: classpath:keystore.p12
-    key-store-password: tomcat
-    key-store-type: PKCS12
+  port: 8090
+#  port: 443
+#  ssl:
+#    key-alias: tomcat
+#    key-store: classpath:keystore.p12
+#    key-store-password: tomcat
+#    key-store-type: PKCS12
 
 spring:
   druid:
@@ -27,7 +28,13 @@ spring:
           starttls:
             enable: true
             required: true
-
+  thymeleaf:
+    cache: false
+    enabled: true
+    encoding: UTF-8
+    mode: HTML
+    prefix: classpath:/templates/
+    suffix: .html
 
 mybatis:
   type-aliases-package: com.zhihu.demo.model #给包中的类注册别名，注册后可以直接使用类名，而不用使用全限定的类名（就是不用包含包名）。
@@ -40,3 +47,12 @@ mybatis:
     default-executor-type: reuse
     jdbc-type-for-null: NULL
   mapper-locations: mapper/projectMapper.xml #mapper文件
+
+#constant
+com:
+  zhihu:
+    demo:
+      constant:
+        salt: a_word # 密码盐
+        expire: 3600000 # 60*60*1000 token过期时间为一小时
+        refresh: 2592000000 #30*24*60*60*1000 token刷新有效期为一个月

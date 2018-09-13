@@ -2,7 +2,6 @@ package com.zhihu.demo.config;
 
 import com.zhihu.demo.shiro.JWTFilter;
 import com.zhihu.demo.shiro.MyShiroRealm;
-import org.apache.shiro.authc.pam.ModularRealmAuthenticator;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
@@ -24,10 +23,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Configuration
-@Order(1)
+@Order(2)
 public class ShiroConfig {
 
-    @Bean
+    @Bean(name="shiroFilter")
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
@@ -38,10 +37,12 @@ public class ShiroConfig {
         //可以指定多个拦截器 访问端口等
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         //所有地址都经过JWTFilter
-        filterChainDefinitionMap.put("/**", "jwt");
-        // 设置访问路由地址 /401 /404 不经过过滤器
+        filterChainDefinitionMap.put("/login", "anon");
+        filterChainDefinitionMap.put("/reg", "anon");
         filterChainDefinitionMap.put("/401", "anon");
         filterChainDefinitionMap.put("/404", "anon");
+        filterChainDefinitionMap.put("/**", "jwt");
+        // 设置访问路由地址 /401 /404 不经过过滤器
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
@@ -69,7 +70,6 @@ public class ShiroConfig {
     @Bean
     public CacheManager ehCacheManager() {
         EhCacheManager cacheManager = new EhCacheManager();
-        //todo 改成单例模式 消除启动警告？
         cacheManager.setCacheManagerConfigFile("classpath:ehcache/ehcache.xml");
         return cacheManager;
     }
