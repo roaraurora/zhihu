@@ -17,10 +17,11 @@ public class RoleService {
         this.roleDao = roleDao;
     }
 
-    public Role getRoleByUser(String email) {
-        Role role = roleDao.selectRoleByUser(email);
+    public Role getRoleByUserId(String id) {
+        Role role = roleDao.selectRoleByUserId(id);
         if (role == null) {
-            throw new GlobalException(CodeMsg.ROLE_NOT_FOUND);
+            //用户不存在时
+            throw new GlobalException(CodeMsg.USER_NOT_FOUND);
         }
         return role;
     }

@@ -8,9 +8,12 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.util.Map;
 
 @Service
 public class MailService {
@@ -20,6 +23,13 @@ public class MailService {
 
     @Value("${spring.mail.username}")
     private String from;
+
+    private TemplateEngine templateEngine;
+
+    @Autowired
+    public void setTemplateEngine(TemplateEngine templateEngine) {
+        this.templateEngine = templateEngine;
+    }
 
     @Autowired
     public void setSender(JavaMailSender sender) {
@@ -62,11 +72,18 @@ public class MailService {
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setText(content, true);
-
             sender.send(message);
             logger.info("html邮件已经发送。");
         } catch (MessagingException e) {
             logger.error("发送html邮件时发生异常！", e);
         }
+    }
+
+    void sendRegMail(String to, Map<String, Object> mailMap){
+        Context context = new Context();
+        context.setVariables(mailMap);
+        String emailContent = templateEngine.process("emailTemplate", context);
+        String subject = "在线问答社区账号激活";
+        sendHtmlMail(to,subject,emailContent);
     }
 }

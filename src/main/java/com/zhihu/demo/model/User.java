@@ -1,17 +1,26 @@
 package com.zhihu.demo.model;
 
 public class User {
-    private Integer user_id;
+    private Integer userId;
     private String email;
     private String username;
     private String password;
+    private Integer roleId;
 
-    public Integer getUser_id() {
-        return user_id;
+    public Integer getRoleId() {
+        return roleId;
     }
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getEmail() {

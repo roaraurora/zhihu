@@ -6,6 +6,7 @@ import com.zhihu.demo.result.Result;
 import com.zhihu.demo.service.UserService;
 import com.zhihu.demo.util.ConstantBean;
 import com.zhihu.demo.vo.LoginVo;
+import com.zhihu.demo.vo.RegVo;
 import com.zhihu.demo.vo.TokenVo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
@@ -19,10 +20,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.Map;
 
 @RestController
+@RequestMapping("/user")
 public class UserController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -42,12 +44,34 @@ public class UserController {
 
     /**
      * 用户登录
+     *
      * @param loginVo 登录数据对象
      */
     @PostMapping("/login")
     public Result<TokenVo> login(@RequestBody @Valid LoginVo loginVo) throws GlobalException {
         TokenVo tokenVo = userService.login(loginVo);
         return Result.success(tokenVo);
+    }
+
+    @PostMapping("/logout")
+    @RequiresAuthentication
+    public Result<Boolean> logout() throws GlobalException {
+        Subject subject = SecurityUtils.getSubject();
+        userService.logout(subject);
+        return Result.success(true);
+    }
+
+    @PostMapping("/reg")
+    public Result<Boolean> reg(@RequestBody @Valid RegVo regVo) throws GlobalException {
+        userService.reg(regVo); //失败抛出异常
+        return Result.success(true);
+    }
+
+    @GetMapping("/activation/{cryptoUserId}")
+    public Result<Boolean> activate(@PathVariable("cryptoUserId") String cryptoUserId, HttpServletResponse response) throws GlobalException {
+        userService.active(cryptoUserId,response); //失败抛出异常
+        //todo 激活成功路由到首页
+        return Result.success(true);
     }
 
     @GetMapping("/article")
@@ -93,7 +117,7 @@ public class UserController {
     @RequestMapping(path = "/401")
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public Result<String> unauthorized() {
-        logger.info("constant :salt => "+constantBean.getSalt()+" refresh => "+constantBean.getRefresh()+" expire => "+constantBean.getExpire());
+        logger.info("constant :salt => " + constantBean.getSalt() + " refresh => " + constantBean.getRefresh() + " expire => " + constantBean.getExpire());
         return Result.error(CodeMsg.UNAUTHORIZED);
     }
 

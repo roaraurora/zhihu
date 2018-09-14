@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public interface RoleDao {
 
-    @Select("select role.role_id,role.role_name,role.permission from role,users where role.role_id = users.role_id and users.email=#{email}")
-    Role selectRoleByUser(@Param("email") String email);
+    @Select("select role.role_id,role.role_name,role.permission from role,users where role.role_id = users.role_id and users.user_id=#{id}")
+    Role selectRoleByUserId(@Param("id") String id);
 
 }

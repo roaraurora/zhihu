@@ -69,7 +69,7 @@ public class InBoundChannelInterceptor implements ChannelInterceptor {
             JWTToken token = new JWTToken(authorization);
             Subject subject = SecurityUtils.getSubject();
             subject.login(token); //token verify失败时抛出 AuthenticationException异常
-            String username = JWTUtil.getEmail(authorization);
+            String username = JWTUtil.getId(authorization);
             logger.info("[命令: 连接] 用户为 => " + username + " 登录状态： " + subject.isAuthenticated());
             MyPrincipal principal = new MyPrincipal(username);
             accessor.setUser(principal);//这是消息能发送到目标用户的关键
