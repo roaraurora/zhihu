@@ -86,4 +86,5 @@ public class MailService {
         String subject = "在线问答社区账号激活";
         sendHtmlMail(to,subject,emailContent);
     }
+
 }

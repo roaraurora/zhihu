@@ -61,7 +61,6 @@ public class InBoundChannelInterceptor implements ChannelInterceptor {
         if (StompCommand.CONNECT.equals(command)) {
             //绑定securityManager到ThreadContext
             ThreadContext.bind(securityManager);
-            SecurityUtils.getSubject();
 //            final MultiValueMap<String, String> nativeHeaders = (MultiValueMap<String, String>) accessor.getHeader(StompHeaderAccessor.NATIVE_HEADERS);
 //            List<String> auth = nativeHeaders.get("Authorization");
             String authorization = accessor.getFirstNativeHeader("Authorization");

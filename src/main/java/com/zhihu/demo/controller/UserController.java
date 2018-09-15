@@ -56,21 +56,13 @@ public class UserController {
     @PostMapping("/logout")
     @RequiresAuthentication
     public Result<Boolean> logout() throws GlobalException {
-        Subject subject = SecurityUtils.getSubject();
-        userService.logout(subject);
+        userService.logout();
         return Result.success(true);
     }
 
     @PostMapping("/reg")
     public Result<Boolean> reg(@RequestBody @Valid RegVo regVo) throws GlobalException {
         userService.reg(regVo); //失败抛出异常
-        return Result.success(true);
-    }
-
-    @GetMapping("/activation/{cryptoUserId}")
-    public Result<Boolean> activate(@PathVariable("cryptoUserId") String cryptoUserId, HttpServletResponse response) throws GlobalException {
-        userService.active(cryptoUserId,response); //失败抛出异常
-        //todo 激活成功路由到首页
         return Result.success(true);
     }
 

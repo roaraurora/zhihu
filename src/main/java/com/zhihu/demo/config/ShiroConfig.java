@@ -36,9 +36,9 @@ public class ShiroConfig {
 
         //可以指定多个拦截器 访问端口等
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-        //所有地址都经过JWTFilter
-        filterChainDefinitionMap.put("/login", "anon");
-        filterChainDefinitionMap.put("/reg", "anon");
+        filterChainDefinitionMap.put("/user/login", "anon");
+        filterChainDefinitionMap.put("/user/reg", "anon");
+        filterChainDefinitionMap.put("/mail/activation/**", "anon");
         filterChainDefinitionMap.put("/401", "anon");
         filterChainDefinitionMap.put("/404", "anon");
         filterChainDefinitionMap.put("/**", "jwt");

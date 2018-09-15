@@ -1,6 +1,5 @@
 package com.zhihu.demo.service;
 
-import com.sun.corba.se.spi.ior.IdentifiableFactory;
 import com.zhihu.demo.dao.UserDao;
 import com.zhihu.demo.exception.GlobalException;
 import com.zhihu.demo.model.User;
@@ -14,6 +13,7 @@ import com.zhihu.demo.util.MD5Util;
 import com.zhihu.demo.vo.LoginVo;
 import com.zhihu.demo.vo.RegVo;
 import com.zhihu.demo.vo.TokenVo;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -97,13 +97,19 @@ public class UserService {
         return new TokenVo(token);
     }
 
-    public void logout(Subject subject) {
-        PrincipalCollection principalCollection = subject.getPrincipals();
-        String id = JWTUtil.getId(principalCollection.toString()); //如果连token都可以伪造了 id算什么
-        logger.info("logout user with id => " + id + " jti => " + JWTUtil.getJti(principalCollection.toString()));
+    /**
+     * 登出一个用户 并修改redis白名单状态
+     */
+    public void logout() {
+        String id = getUserIdFromSecurity();
         redisService.set(UserKey.getById, id, "invalid_token"); //这里的value没什么讲究 就是不能为null
     }
 
+    /**
+     * 注册一个用户 并为其发送激活邮件
+     *
+     * @param regVo 注册数据对象
+     */
     public void reg(RegVo regVo) {
         if (regVo == null) {
             throw new GlobalException(CodeMsg.SERVER_ERROR);
@@ -122,17 +128,18 @@ public class UserService {
             if (result != 1) {
                 throw new GlobalException(CodeMsg.CREATE_USER_FAIL);
             }
-            Map<String,Object> mailMap = new HashMap<>();
-            mailMap.put("username",username);
-            String cryptoUserId = JasyptUtil.encryptPwd(constantBean.getSalt(),user.getUserId().toString());
-            mailMap.put("id",cryptoUserId);
-            mailService.sendRegMail(mail,mailMap);
+            sendActiveMail(user);
         } else {
             throw new GlobalException(CodeMsg.EMAIL_ALREDY_USE);
         }
 
     }
 
+    /**
+     * 更加被加密过后的用户id 激活相应的用户
+     *
+     * @param cryptoUserId 被加密过后又的用户id
+     */
     public void active(String cryptoUserId, HttpServletResponse response) {
         String userId = JasyptUtil.decryptPwd(constantBean.getSalt(), cryptoUserId);
         User user = getUserById(userId); //没有直接报错
@@ -142,9 +149,32 @@ public class UserService {
             if (result != 1) {
                 throw new GlobalException(CodeMsg.CREATE_USER_FAIL);
             }
-        }else {
+        } else {
             //用户存在但状态不为未激活inactivated
             response.setStatus(403);
         }
+    }
+
+    /**
+     * 发送一封激活邮件
+     *
+     * @param user 需要激活的目标用户
+     */
+    public void sendActiveMail(User user) {
+        Map<String, Object> mailMap = new HashMap<>();
+        mailMap.put("username", user.getUsername());
+        String cryptoUserId = JasyptUtil.encryptPwd(constantBean.getSalt(), user.getUserId().toString());
+        mailMap.put("id", cryptoUserId);
+        mailService.sendRegMail(user.getEmail(), mailMap);
+    }
+
+    /**
+     * 从当前shiro security manager中获取到用户的token
+     * 再根据token获取用户id
+     */
+    public String getUserIdFromSecurity() {
+        Subject subject = SecurityUtils.getSubject();
+        PrincipalCollection principalCollection = subject.getPrincipals();
+        return JWTUtil.getId(principalCollection.toString());
     }
 }

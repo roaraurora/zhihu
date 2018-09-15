@@ -131,7 +131,7 @@ public class RedisService {
         }
     }
 
-    private <T> String beanToString(T value) {
+    public  <T> String beanToString(T value) {
         //序列化
         if (value == null) {
             return null;
@@ -145,7 +145,7 @@ public class RedisService {
             return "" + value;
         } else {
             //对于其他类型 当作bean处理
-            /* *
+            /* * 5
              * JavaBean是特殊的Java类
              * 1.提供一个默认的无参构造函数。
              * 2.需要被序列化并且实现了Serializable接口。

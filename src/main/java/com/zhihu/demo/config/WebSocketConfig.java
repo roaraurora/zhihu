@@ -22,18 +22,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     private MyHandShakeInterceptor myHandShakeInterceptor;
 
-    private MyPrincipalHandshakeHandler myPrincipalHandshakeHandler;
-
     private OutBoundChannelInterceptor outBoundChannelInterceptor;
 
     @Autowired
     public void setOutBoundChannelInterceptor(OutBoundChannelInterceptor outBoundChannelInterceptor) {
         this.outBoundChannelInterceptor = outBoundChannelInterceptor;
-    }
-
-    @Autowired
-    public void setMyPrincipalHandshakeHandler(MyPrincipalHandshakeHandler myPrincipalHandshakeHandler) {
-        this.myPrincipalHandshakeHandler = myPrincipalHandshakeHandler;
     }
 
     @Autowired

@@ -62,21 +62,6 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
      */
     @Override
     protected boolean preHandle(ServletRequest request, ServletResponse response) throws Exception {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-        httpServletResponse.setHeader("Access-Control-Allow-Origin", httpServletRequest.getHeader("Origin"));
-        httpServletResponse.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS,PUT,DELETE");
-        httpServletResponse.setHeader("Access-Control-Allow-Headers", httpServletRequest.getHeader("Access-Control-Request-Headers"));
-        logger.warn(httpServletRequest.getRequestURI());
-        if (httpServletRequest.getRequestURI().equals("/endpoint/info")) {
-            //sockjs 需要这个字段
-            httpServletResponse.setHeader("Access-Control-Allow-Credentials", "true");
-        }
-        //跨域资源请求的第一个option请求 直接返回OK 200
-        if (httpServletRequest.getMethod().equals(RequestMethod.OPTIONS.name())) {
-            httpServletResponse.setStatus(HttpStatus.OK.value());
-            return false;
-        }
         return super.preHandle(request, response);
     }
 
