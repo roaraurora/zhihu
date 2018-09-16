@@ -52,14 +52,31 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .withSockJS();
     }
 
-    //配置简单消息代理
+    /**
+     * 简单消息代理
+     */
+//    @Override
+//    public void configureMessageBroker(MessageBrokerRegistry registry) {
+//        // 设置接收客户端消息的路径前缀 即客户端与服务器建立好WebSocket连接后 客户端访问服务器上的MessageMapping从而给服务器发送数据时 需要带上前缀
+//        registry.setApplicationDestinationPrefixes("/app");
+//        //设置接收客户端订阅的路径前缀 即客户端与服务器建立好WebSocket连接后 客户端想订阅服务器上的消息时  需要在MessageMapping的@SendTo注解的提供订阅的路径上 加上前缀
+//        //topic通常代表广播
+//        registry.enableSimpleBroker("/topic", "/queue");
+//    }
+
+    /**
+     * 配置RabbitMQ作为消息代理
+     */
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        // 设置接收客户端消息的路径前缀 即客户端与服务器建立好WebSocket连接后 客户端访问服务器上的MessageMapping从而给服务器发送数据时 需要带上前缀
-        registry.setApplicationDestinationPrefixes("/app");
-        //设置接收客户端订阅的路径前缀 即客户端与服务器建立好WebSocket连接后 客户端想订阅服务器上的消息时  需要在MessageMapping的@SendTo注解的提供订阅的路径上 加上前缀
-        //topic通常代表广播
-        registry.enableSimpleBroker("/topic","/queue");
+//        registry.setApplicationDestinationPrefixes("/app");
+        registry.enableStompBrokerRelay("/exchange", "/topic", "/queue", "/amp/queue")
+                .setRelayHost("120.79.223.90")
+                .setRelayPort(5672)
+                .setClientLogin("root")
+                .setClientPasscode("546449")
+                .setSystemHeartbeatSendInterval(5000)
+                .setSystemHeartbeatReceiveInterval(4000);
     }
 
     @Override

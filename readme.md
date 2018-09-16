@@ -1,5 +1,5 @@
 > 基于springboot 的前后端分离架构的在线问答社区
-作者信息 @me @chen @sun
+作者信息 @deng @chen @sun
 ## TODO LLST
 1. 邮件验证 -done 
 2. https -done 需要openssl生成一个IP方式访问的签名证书
@@ -22,7 +22,11 @@
 2. 前端通过拦截器 检查收到的请求 若响应头带有 access_token字段 则将其更新local_storage
 5. 当改密码或其它需要将所有已登录的客户端重登时 更新redis 白名单 用jti字段唯一标识一个用户对应的token (白名单都用上了 越来越像session)
 
-- **mq发邮件**
-- **私信** 
+- **私信**
 1. 登录时应该返回足够多的用户信息 减少数据库查询次数 即修改tokenVo
 
+- **关注**
+用bitmap类型实现 
+
+- **点赞**
+用zset实现 支持排序
