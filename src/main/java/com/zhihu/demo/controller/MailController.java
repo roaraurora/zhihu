@@ -4,6 +4,7 @@ import com.zhihu.demo.exception.GlobalException;
 import com.zhihu.demo.model.User;
 import com.zhihu.demo.result.Result;
 import com.zhihu.demo.service.UserService;
+import com.zhihu.demo.vo.MailVo;
 import com.zhihu.demo.vo.RegVo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -30,7 +31,8 @@ public class MailController {
     public Result<Boolean> reg() throws GlobalException {
         String id = userService.getUserIdFromSecurity();
         User user = userService.getUserById(id);
-        userService.sendActiveMail(user);
+        MailVo mailVo = new MailVo(user.getUsername(), user.getUserId().toString(),user.getEmail());
+        userService.sendActiveMail(mailVo);
         return Result.success(true);
     }
 

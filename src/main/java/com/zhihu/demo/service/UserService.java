@@ -1,5 +1,7 @@
 package com.zhihu.demo.service;
 
+import com.alibaba.fastjson.JSON;
+import com.zhihu.demo.config.RabbitConfig;
 import com.zhihu.demo.dao.UserDao;
 import com.zhihu.demo.exception.GlobalException;
 import com.zhihu.demo.model.User;
@@ -11,6 +13,7 @@ import com.zhihu.demo.util.JWTUtil;
 import com.zhihu.demo.util.JasyptUtil;
 import com.zhihu.demo.util.MD5Util;
 import com.zhihu.demo.vo.LoginVo;
+import com.zhihu.demo.vo.MailVo;
 import com.zhihu.demo.vo.RegVo;
 import com.zhihu.demo.vo.TokenVo;
 import org.apache.shiro.SecurityUtils;
@@ -18,6 +21,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +43,13 @@ public class UserService {
     private MailService mailService;
 
     private RoleService roleService;
+
+    private RabbitTemplate rabbitTemplate;
+
+    @Autowired
+    public void setRabbitTemplate(RabbitTemplate rabbitTemplate) {
+        this.rabbitTemplate = rabbitTemplate;
+    }
 
     @Autowired
     public void setRoleService(RoleService roleService) {
@@ -128,7 +139,9 @@ public class UserService {
             if (result != 1) {
                 throw new GlobalException(CodeMsg.CREATE_USER_FAIL);
             }
-            sendActiveMail(user);
+//            sendActiveMail(user);
+            MailVo mailVo = new MailVo(user.getUsername(),user.getUserId().toString(),user.getEmail());
+            rabbitTemplate.convertAndSend(RabbitConfig.MAIL_EXCHANGE,RabbitConfig.MAIL_ROUTEKEY, JSON.toJSONString(mailVo));
         } else {
             throw new GlobalException(CodeMsg.EMAIL_ALREDY_USE);
         }
@@ -142,6 +155,7 @@ public class UserService {
      */
     public void active(String cryptoUserId, HttpServletResponse response) {
         String userId = JasyptUtil.decryptPwd(constantBean.getSalt(), cryptoUserId);
+        logger.info("userid => " + userId);
         User user = getUserById(userId); //没有直接报错
         if (roleService.getRoleByUserId(userId).getRoleName().equals("inactivated")) {
             user.setRoleId(1);
@@ -157,15 +171,13 @@ public class UserService {
 
     /**
      * 发送一封激活邮件
-     *
-     * @param user 需要激活的目标用户
      */
-    public void sendActiveMail(User user) {
+    public void sendActiveMail(MailVo mailVo) {
         Map<String, Object> mailMap = new HashMap<>();
-        mailMap.put("username", user.getUsername());
-        String cryptoUserId = JasyptUtil.encryptPwd(constantBean.getSalt(), user.getUserId().toString());
+        mailMap.put("username", mailVo.getUsername());
+        String cryptoUserId = JasyptUtil.encryptPwd(constantBean.getSalt(), mailVo.getId());
         mailMap.put("id", cryptoUserId);
-        mailService.sendRegMail(user.getEmail(), mailMap);
+        mailService.sendRegMail(mailVo.getMail(), mailMap);
     }
 
     /**
