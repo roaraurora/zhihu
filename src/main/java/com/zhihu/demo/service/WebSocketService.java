@@ -35,8 +35,6 @@ public class WebSocketService {
         String message = messageVo.getMessage();
         RespMessageVo respMessageVo = new RespMessageVo(message, Integer.valueOf(principal.getName()));
         simpMessagingTemplate.convertAndSendToUser(userId, "/queue/getResponse", redisService.beanToString(respMessageVo));
-        // 3 如何判断一个用户是否在线 订阅了WAZ vc zerstdughy cxszAzxCDXZZebSocket
-
     }
 
 }

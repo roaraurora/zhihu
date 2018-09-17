@@ -28,7 +28,7 @@ public class RabbitConfig {
     }
 
     /**
-     * 延迟队列 TTL (time to die) 名称
+     * 延迟队列名称 注意 延迟队列名称若和路由键名称相同 否则会被绑定到默认的direct交换器上
      */
     private static final String REGISTER_DELAY_QUEUE = "dec.book.register.delay.queue";
 
@@ -59,7 +59,18 @@ public class RabbitConfig {
      *     message.getMessageProperties().setExpiration(2* 1000+"");
      *     return message;
      * }); 发送消息时动态设置延迟时间
-     * @return
+     *
+     * 通过params定义了这个队列中过期了的死信的转发处理
+     *
+     * 完整的延迟队列流程为
+     * 1.定义了 队列 EGISTER_DELAY_QUEUE 的死信将会 携带路由键为 ROUTING_KEY 被转发到 死信交换器 REGISTER_EXCHANGE_NAME 上
+     * 2.绑定 直连交换器 REGISTER_DELAY_EXCHANGE 与 队列 EGISTER_DELAY_QUEUE, 绑定键为DELAY_ROUTING_KEY
+     * 3.绑定 队列 REGISTER_QUEUE_NAME 到主题交换器(死信) REGISTER_EXCHANGE_NAME 上 绑定键为ROUTING_KEY
+     * 4.生产者向 直连交换器 REGISTER_DELAY_EXCHANGE 发送消息 路由键为 DELAY_ROUTING_KEY 并设置过期时间为 5秒
+     * 5.消息被 直连交换器 REGISTER_DELAY_EXCHANGE 转发到 队列 EGISTER_DELAY_QUEUE上
+     * 6.因为队列 EGISTER_DELAY_QUEUE没有被消费者订阅 所以消息将在5秒后过期
+     * 7.过期的消息成为死信 被 1 处理
+     * 8.消费者订阅 队列REGISTER_QUEUE_NAME 收到从死信交换器上转发来的消息
      */
     @Bean
     public Queue delayProcessQueue() {
@@ -77,7 +88,7 @@ public class RabbitConfig {
     }
 
     /**
-     * 这个binding
+     * 这个binding 定义了 将delayProcessQueue绑定在direct类型的交换器delayExchange上 并使用bindingKey DELAY_ROUTING_KEY
      * @return
      */
     @Bean
@@ -91,8 +102,8 @@ public class RabbitConfig {
     }
 
     /**
-     * 将路由键和某模式进行匹配 此时队列需要绑定在一个模式上。
-     * 符合"#"匹配一个或多个词 "*"匹配一个词 非字
+     * 主题交换器 需要 定义一个绑定 才能使用 否则 消息在被交换器转发时找不到对应的队列就会被 抛弃
+     * 转发时 "#"匹配0个或多个词 "*"匹配一个词 routing-key 和binding-key以 "." 隔开
      * @return
      */
     @Bean
@@ -100,6 +111,10 @@ public class RabbitConfig {
         return new TopicExchange(REGISTER_EXCHANGE_NAME);
     }
 
+    /**
+     * 这个binding 定义了 将registerBookQueue绑定在Topic类型的交换器registerBookTopicExchange上 并使用bindingKey ROUTING_KEY
+     * @return
+     */
     @Bean
     public Binding registerBookBinding(){
         return BindingBuilder.bind(registerBookQueue()).to(registerBookTopicExchange()).with(ROUTING_KEY);
@@ -112,9 +127,9 @@ public class RabbitConfig {
     @Bean
     Queue mailQueue() {
         String name=MAIL_QUEUE_NAME;
-        boolean durable = true; //持久化
-        boolean exclusive = false; //仅创建者可以使用的私有队列 断开后自动删除
-        boolean autoDelete=false; //当所有消费者客户端断开连接后 自动删除队列
+        boolean durable = true; //持久性 如果启用，队列将会在Broker重启前都有效
+        boolean exclusive = false; //排他性 队列只能被声明它的消费者使用 断开后自动删除
+        boolean autoDelete=false; //自动删除 当所有消费者客户端断开连接后 自动删除队列
         return new Queue(name, durable, exclusive, autoDelete);
 
     }

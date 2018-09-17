@@ -143,6 +143,20 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
+        <!--stompBrokerRelayMessageHandler-->
+        <!-- https://mvnrepository.com/artifact/io.projectreactor/reactor-net -->
+        <dependency>
+            <groupId>io.projectreactor.ipc</groupId>
+            <artifactId>reactor-netty</artifactId>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.28.Final</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>

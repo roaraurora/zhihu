@@ -72,9 +72,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 //        registry.setApplicationDestinationPrefixes("/app");
         registry.enableStompBrokerRelay("/exchange", "/topic", "/queue", "/amp/queue")
                 .setRelayHost("120.79.223.90")
-                .setRelayPort(5672)
+                .setRelayPort(61613)
                 .setClientLogin("root")
                 .setClientPasscode("546449")
+                .setSystemLogin("root")
+                .setSystemPasscode("546449")
                 .setSystemHeartbeatSendInterval(5000)
                 .setSystemHeartbeatReceiveInterval(4000);
     }

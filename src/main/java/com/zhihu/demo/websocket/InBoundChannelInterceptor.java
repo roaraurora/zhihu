@@ -58,11 +58,11 @@ public class InBoundChannelInterceptor implements ChannelInterceptor {
         logger.info(this.getClass().getCanonicalName() + " 消息发送前");
         StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
         StompCommand command = accessor != null ? accessor.getCommand() : null;
+        String sessionId = accessor != null ? accessor.getSessionId() : null;
         if (StompCommand.CONNECT.equals(command)) {
             //绑定securityManager到ThreadContext
             ThreadContext.bind(securityManager);
-//            final MultiValueMap<String, String> nativeHeaders = (MultiValueMap<String, String>) accessor.getHeader(StompHeaderAccessor.NATIVE_HEADERS);
-//            List<String> auth = nativeHeaders.get("Authorization");
+
             String authorization = accessor.getFirstNativeHeader("Authorization");
             logger.info("接收到的token为 => " + authorization);
             JWTToken token = new JWTToken(authorization);
@@ -83,16 +83,18 @@ public class InBoundChannelInterceptor implements ChannelInterceptor {
     public void afterSendCompletion(Message<?> message, MessageChannel channel, boolean sent, Exception ex) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message); //两种方法都可以获取到accessor对象
         StompCommand stompCommand = accessor.getCommand();
-        logger.info(this.getClass().getCanonicalName() + " 消息发送后 类型为" + stompCommand.getMessageType());
-        //CONNECT, CONNECT_ACK, MESSAGE, SUBSCRIBE, UNSUBSCRIBE, HEARTBEAT, DISCONNECT, DISCONNECT_ACK, OTHER;
-        if (StompCommand.SUBSCRIBE.equals(stompCommand)) {
-            logger.info(this.getClass().getCanonicalName() + "订阅消息发送" + sent);
-            Principal principal = accessor.getUser();
-            String username = principal.getName();
-            applicationContext.publishEvent(new MyApplicationEvent(principal, username));
-        }
-        if (StompCommand.DISCONNECT.equals(stompCommand)) {
-            logger.info(this.getClass().getCanonicalName() + "用户断开连接成功");
+        if (stompCommand != null) {
+            logger.info(this.getClass().getCanonicalName() + " 消息发送后 类型为" + stompCommand.getMessageType());
+            //CONNECT, CONNECT_ACK, MESSAGE, SUBSCRIBE, UNSUBSCRIBE, HEARTBEAT, DISCONNECT, DISCONNECT_ACK, OTHER;
+            if (StompCommand.SUBSCRIBE.equals(stompCommand)) {
+                logger.info(this.getClass().getCanonicalName() + "订阅消息发送" + sent);
+                Principal principal = accessor.getUser();
+                String username = principal.getName();
+                applicationContext.publishEvent(new MyApplicationEvent(principal, username));
+            }
+            if (StompCommand.DISCONNECT.equals(stompCommand)) {
+                logger.info(this.getClass().getCanonicalName() + "用户断开连接成功");
+            }
         }
     }
 }

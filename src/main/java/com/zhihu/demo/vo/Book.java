@@ -1,7 +1,7 @@
 package com.zhihu.demo.vo;
 
 /**
- * test RabbitMQ model
+ * test rabbitMQ model
  */
 public class Book implements java.io.Serializable{
 
