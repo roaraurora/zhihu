@@ -28,7 +28,7 @@ public class QuestionServiceTest {
     public void addQuestion() {
         Question question = new Question();
         question.setContent("sunday");
-        question.setU_id(3);
+        question.setUserId(3);
         questionService.addQuestion(question);
 
     }

@@ -10,17 +10,28 @@ import com.zhihu.demo.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import javax.annotation.Resource;
+
 import java.util.*;
 
 @Service
 public class CommentService {
-    @Resource(name = "CommentMapper")
+
     private CommentDao commentDao;
-    @Resource(name = "QuestionMapper")
     private QuestionDao questionDao;
-    @Autowired
     private QuestionService questionService;
+
+    @Autowired
+    public void setCommentDao(CommentDao commentDao) {
+        this.commentDao = commentDao;
+    }
+    @Autowired
+    public void setQuestionDao(QuestionDao questionDao) {
+        this.questionDao = questionDao;
+    }
+    @Autowired
+    public void setQuestionService(QuestionService questionService) {
+        this.questionService = questionService;
+    }
 
     /**
      * 根据问题找到对应的评论
@@ -33,14 +44,14 @@ public class CommentService {
 
     /**
      * 找到自己的评论及所属的问题
-     * @param u_id 用户id
+     * @param userId 用户id
      * @return  返回一个评论与问题对应的map
      */
-    public List<List> queryCommentByUid(int u_id) {
-        List<List> lists = new ArrayList<List>();
-        List<Comment> commentList = commentDao.queryCommentByUid(u_id);
+    public List<List> queryCommentByUid(int userId) {
+        List<List> lists = new ArrayList<>();
+        List<Comment> commentList = commentDao.queryCommentByUid(userId);
         ListIterator<Comment> listIterator = commentList.listIterator();
-        List<Question> questionList = new ArrayList<Question>();
+        List<Question> questionList = new ArrayList<>();
         while (listIterator.hasNext()){
             Comment comment = listIterator.next();
             Question question = questionDao.queryQuestionByq_id(comment.getQ_id());
@@ -82,7 +93,7 @@ public class CommentService {
      * 删除评论和修改对应评论上的评论数
      * @param comment 要删除的评论
      * @param question 对应的问题
-     * @return
+     * @return 返回修改评论数后的评论对象
      */
     @Transactional
     public Result<Question> deleteComment(Comment comment, Question question) {
@@ -104,7 +115,7 @@ public class CommentService {
 
     /**
      * 修改点赞数
-     * @param comment
+     * @param comment  要修改的评论对象 包含c_id pnum
      * @return 是否成功
      */
     @Transactional
@@ -122,7 +133,7 @@ public class CommentService {
             }
 
         } else {
-            throw new GlobalException(CodeMsg.MODIFY_ID_ERROR);
+            throw new GlobalException(CodeMsg.MODIFY_COMMENT_ID_ERROR);
         }
     }
 }

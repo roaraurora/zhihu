@@ -18,19 +18,19 @@ public class CodeMsg {
     public static final CodeMsg CREATE_USER_FAIL = new CodeMsg(500410, "create user failed"); //创建用户失败 原因未知 与数据库有关;
 
     // by sun
-    public static final CodeMsg INSERT_COMMENT_ERROR = new CodeMsg(700401, "insert comment error"); //未找到用户的系统角色
-    public static final CodeMsg COMMENT_IS_NULL = new CodeMsg(700402, "comment is null"); //未找到用户的系统角色
-    public static final CodeMsg DELETE_COMMENT_ID_ERROR_ = new CodeMsg(700403, "comment is null"); //未找到用户的系统角色
-    public static final CodeMsg DELETE_COMMENT_ERROR = new CodeMsg(700403, "comment is null"); //未找到用户的系统角色
-    public static final CodeMsg MODIFY_COMMENT_PNUM_ERROR = new CodeMsg(700403, "comment is null"); //未找到用户的系统角色
-    public static final CodeMsg MODIFY_ID_ERROR = new CodeMsg(700403, "comment is null"); //未找到用户的系统角色
+    public static final CodeMsg INSERT_COMMENT_ERROR = new CodeMsg(700401, "插入评论错误");
+    public static final CodeMsg COMMENT_IS_NULL = new CodeMsg(700402, "评论为空");
+    public static final CodeMsg DELETE_COMMENT_ID_ERROR_ = new CodeMsg(700403, "删错评论错误，评论id错误");
+    public static final CodeMsg DELETE_COMMENT_ERROR = new CodeMsg(700403, "删除评论错误");
+    public static final CodeMsg MODIFY_COMMENT_PNUM_ERROR = new CodeMsg(700403, "修改点赞数异常");
+    public static final CodeMsg MODIFY_COMMENT_ID_ERROR = new CodeMsg(700403, "修改评论错误，修改评论di异常");
 
-    public static final CodeMsg INSERT_QUESTION_ERROR = new CodeMsg(700401, "insert comment error"); //未找到用户的系统角色
-    public static final CodeMsg QUESTION_IS_NULL = new CodeMsg(700402, "comment is null"); //未找到用户的系统角色
-    public static final CodeMsg DELETE_QUESTION_ID_ERROR_ = new CodeMsg(700403, "comment is null"); //未找到用户的系统角色
-    public static final CodeMsg DELETE_QUESTION_ERROR = new CodeMsg(700403, "comment is null"); //未找到用户的系统角色
-    public static final CodeMsg MODIFY_QUESTOPM_ID_ERROR = new CodeMsg(700403, "comment is null"); //未找到用户的系统角色
-    public static final CodeMsg MODIFY_QUESTION_ERROR = new CodeMsg(700403, "comment is null"); //未找到用户的系统角色
+    public static final CodeMsg INSERT_QUESTION_ERROR = new CodeMsg(700401, "添加问题错误");
+    public static final CodeMsg QUESTION_IS_NULL = new CodeMsg(700402, "问题内容为空");
+    public static final CodeMsg DELETE_QUESTION_ID_ERROR_ = new CodeMsg(700403, "删除问题失败，id错误");
+    public static final CodeMsg DELETE_QUESTION_ERROR = new CodeMsg(700403, "删除问题失败");
+    public static final CodeMsg MODIFY_QUESTOPM_ID_ERROR = new CodeMsg(700403, "修改问题失败，id错误");
+    public static final CodeMsg MODIFY_QUESTION_ERROR = new CodeMsg(700403, "修改问题失败");
 
 
 

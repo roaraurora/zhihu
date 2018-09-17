@@ -1,9 +1,12 @@
 package com.zhihu.demo.dao;
 
 import com.zhihu.demo.model.Question;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
-
+@Mapper
+@Component
 public interface QuestionDao {
     /**
      * 查询所有发布的问题
@@ -13,10 +16,10 @@ public interface QuestionDao {
 
     /**
      * 根据用户id查询用户个人发布的问题
-     * @param u_id 用户id
+     * @param userId 用户id
      * @return 用户发布的问题
      */
-    List<Question> queryQuestionByu_id(int u_id);
+    List<Question> queryQuestionByu_id(int userId);
 
     /**
      * 根据问题id查找问题

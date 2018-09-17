@@ -4,6 +4,7 @@ import com.zhihu.demo.model.Question;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -17,8 +18,14 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class QuestionDaoTest {
-    @Resource(name = "QuestionMapper")
-    QuestionDao questionDao;
+
+
+    private QuestionDao questionDao;
+    @Autowired
+    public void setQuestionDao(QuestionDao questionDao) {
+        this.questionDao = questionDao;
+    }
+
     @Test
     public void queryQuestion() {
         List<Question> list= questionDao.queryQuestion();
@@ -37,7 +44,7 @@ public class QuestionDaoTest {
         Question question = new Question();
         question.setRelease_time(new Date());
         question.setContent("this is a question555555");
-        question.setU_id(3);
+        question.setUserId(3);
         int i= questionDao.insertQuestion(question);
         assertEquals(1,i);
 

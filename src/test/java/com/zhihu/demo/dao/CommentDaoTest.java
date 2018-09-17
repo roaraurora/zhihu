@@ -4,6 +4,7 @@ import com.zhihu.demo.model.Comment;
 import com.zhihu.demo.model.Question;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -16,9 +17,11 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class CommentDaoTest {
-    @Resource(name = "CommentMapper")
-    CommentDao commentDao;
-
+    private CommentDao commentDao;
+    @Autowired
+    public void setCommentDao(CommentDao commentDao) {
+        this.commentDao = commentDao;
+    }
     @Test
     public void queryCommentByQid() {
         List<Comment> list = commentDao.queryCommentByQid(5);
@@ -36,7 +39,7 @@ public class CommentDaoTest {
     public void insertComment() {
         Comment comment1 = new Comment();
 
-        comment1.setU_id(1);
+        comment1.setUserId(1);
         comment1.setQ_id(1);
         comment1.setContent("this is a comment");
         comment1.setPnum(1);

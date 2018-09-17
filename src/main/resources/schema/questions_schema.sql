@@ -1,33 +1,17 @@
 -- 创建一个评论表保存用户的评论
 -- by sun
-create table COMMENTS
+create table QUESTIONS
 (
-  C_ID         NUMBER not null,
   Q_ID         NUMBER not null,
-  USER_ID      NUMBER not null,
   RELEASE_TIME DATE not null,
   CONTENT      VARCHAR2(100) not null,
-  PNUM         NUMBER default 0 not null
+  PNUM         NUMBER default 0 not null,
+  CNUM         NUMBER default 0 not null,
+  USER_ID      NUMBER not null
 )
 
-comment on table comments
-is '用户评论表';
-
-comment on column comments.c_id
-is '评论ID';
-comment on column comments.u_id
-is '用户邮箱 登录用';
-comment on column comments.username
-is '用户名';
-comment on column comments.password
-is '用户密码';
-comment on column comments.role_id
-is '用户对应的系统角色的id';
-
--- 主键约束
-
-alter table COMMENTS
-  add constraint ZHIHU_COMMENTS_PK primary key (C_ID)
+alter table QUESTIONS
+  add constraint PRIMARY_KEY_QID primary key (Q_ID)
   using index
   tablespace ZHIHU
   pctfree 10
@@ -41,26 +25,24 @@ alter table COMMENTS
     maxextents unlimited
   );
 
-alter table COMMENTS
-  add constraint FOREIGN_QID foreign key (Q_ID)
-  references QUESTIONS (Q_ID) on delete cascade;
 
-alter table COMMENTS
-  add constraint FOREIGN_UER foreign key (USER_ID)
+alter table QUESTIONS
+  add constraint FIREIGN_USERS_ID foreign key (USER_ID)
   references USERS (USER_ID) on delete cascade;
 
 
-CREATE OR REPLACE TRIGGER tr_comment
-BEFORE INSERT ON comments FOR EACH ROW
-when (new.c_id is null)
-begin
-select comments_s.nextval into:new.c_id from dual;
-end;
-
 -- Create sequence
-create sequence COMMENTS_S
+create sequence QUESTION_S
 minvalue 1
 maxvalue 999999999
-start with 61
+start with 1060
 increment by 1
 cache 20;
+
+
+CREATE OR REPLACE TRIGGER tr_question
+BEFORE INSERT ON questions FOR EACH ROW
+when (new.q_id is null)
+begin
+select question_s.nextval into:new.q_id from dual;
+end;

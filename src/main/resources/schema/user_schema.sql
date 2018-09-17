@@ -6,10 +6,6 @@ create table users (
   photo varchar2(100) ,
   role_id  number        not null,
 
---    write by sun
-  grade number,
-  photo varchar2(100),
-
 );
 
 comment on table users

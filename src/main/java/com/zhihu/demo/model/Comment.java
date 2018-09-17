@@ -5,7 +5,7 @@ import java.util.Date;
 public class Comment {
     private Integer c_id;
     private Integer q_id;
-    private  Integer u_id;
+    private  Integer userId;
     private Date release_time;
     private String content;
     private Integer pnum;
@@ -26,12 +26,12 @@ public class Comment {
         this.q_id = q_id;
     }
 
-    public Integer getU_id() {
-        return u_id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setU_id(Integer u_id) {
-        this.u_id = u_id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Date getRelease_time() {

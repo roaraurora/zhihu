@@ -8,7 +8,7 @@ public class Question {
     private String content;
     private Integer pnum;
     private Integer cnum;
-    private Integer u_id;
+    private Integer userId;
 
     public Integer getQ_id() {
         return q_id;
@@ -50,12 +50,12 @@ public class Question {
         this.cnum = cnum;
     }
 
-    public Integer getU_id() {
-        return u_id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setU_id(Integer u_id) {
-        this.u_id = u_id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     @Override
@@ -66,7 +66,7 @@ public class Question {
                 ", content='" + content + '\'' +
                 ", pnum=" + pnum +
                 ", cnum=" + cnum +
-                ", u_id=" + u_id +
+                ", u_id=" + userId +
                 '}';
     }
 }

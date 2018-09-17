@@ -1,9 +1,12 @@
 package com.zhihu.demo.dao;
 
 import com.zhihu.demo.model.Comment;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
-
+@Mapper
+@Component
 public interface CommentDao {
     /**
      * 根据发布的问题id查找评论
@@ -14,10 +17,10 @@ public interface CommentDao {
 
     /**
      * 根据用户的id查找对应的评论
-     * @param u_id  用户id
+     * @param userId  用户id
      * @return 用户对应的所有评论
      */
-    List<Comment> queryCommentByUid(int u_id);
+    List<Comment> queryCommentByUid(int userId);
 
     /**
      * 存入一个评论

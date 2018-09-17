@@ -5,7 +5,7 @@ import com.zhihu.demo.model.Question;
 
 public class AddComment {
     private String content;
-    private Integer u_id;
+    private Integer userId;
     private Integer q_id;
 
 
@@ -14,7 +14,7 @@ public class AddComment {
     public Comment getComment(){
         Comment comment = new Comment();
         comment.setQ_id(q_id);
-        comment.setU_id(u_id);
+        comment.setUserId(userId);
         comment.setContent(content);
         return comment;
     }
@@ -32,12 +32,12 @@ public class AddComment {
         this.content = content;
     }
 
-    public Integer getU_id() {
-        return u_id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setU_id(Integer u_id) {
-        this.u_id = u_id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Integer getQ_id() {

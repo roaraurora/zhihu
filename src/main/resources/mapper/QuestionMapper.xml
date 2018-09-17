@@ -3,18 +3,18 @@
 <mapper namespace="com.zhihu.demo.dao.QuestionDao">
 
     <select id="queryQuestion" resultType="com.zhihu.demo.model.Question">
-        SELECT q_id,release_time,content,pnum,cnum,u_id
+        SELECT q_id,release_time,content,pnum,cnum,user_id
         from questions
         order by release_time
     </select>
     <!--q_id,release_time,content,pnum,cnum,u_id-->
     <select id="queryQuestionByu_id" resultType="com.zhihu.demo.model.Question" >
-        SELECT q_id,release_time,content,pnum,cnum,u_id
+        SELECT q_id,release_time,content,pnum,cnum,user_id
         from questions
-        where u_id= #{u_id}
+        where user_id= #{userId}
     </select>
     <select id="queryQuestionByq_id" resultType="com.zhihu.demo.model.Question" >
-        SELECT q_id,release_time,content,pnum,cnum,u_id
+        SELECT q_id,release_time,content,pnum,cnum,user_id
         from questions
         where q_id= #{q_id}
     </select>
@@ -22,9 +22,9 @@
     <!--keyColumn="q_id"-->
     <insert id="insertQuestion" parameterType="com.zhihu.demo.model.Question">
         INSERT INTO
-        questions(release_time,content,u_id)
+        questions(release_time,content,user_id)
         VALUES
-        (#{release_time},#{content},#{u_id})
+        (#{release_time},#{content},#{userId})
     </insert>
     <update id="updataQuestion" parameterType="com.zhihu.demo.model.Question">
     update questions

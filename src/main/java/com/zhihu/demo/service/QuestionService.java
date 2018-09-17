@@ -5,6 +5,7 @@ import com.zhihu.demo.exception.GlobalException;
 import com.zhihu.demo.model.Question;
 import com.zhihu.demo.result.CodeMsg;
 import com.zhihu.demo.result.Result;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +15,11 @@ import java.util.List;
 
 @Service
 public class QuestionService {
-    @Resource(name = "QuestionMapper")
+    @Autowired
+    public void setQuestionDao(QuestionDao questionDao) {
+        this.questionDao = questionDao;
+    }
+
     private QuestionDao questionDao;
 
     /**
@@ -27,11 +32,11 @@ public class QuestionService {
 
     /**
      * 检索个人的评论表
-     * @param u_id  用户的id
+     * @param userId  用户的id
      * @return 对应的评论表
      */
-    public List<Question> getQuestionListByUID(int u_id) {
-        return questionDao.queryQuestionByu_id(u_id);
+    public List<Question> getQuestionListByUID(int userId) {
+        return questionDao.queryQuestionByu_id(userId);
     }
 
     /**
@@ -61,8 +66,8 @@ public class QuestionService {
 
     /**
      * 删除个人的问题
-     * @param q_id
-     * @return
+     * @param q_id   要删除的问题id
+     * @return  返回是否成功
      */
     @Transactional
     public Result<Object> deleteQuestion(int q_id) {
