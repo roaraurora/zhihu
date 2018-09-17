@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhihu.demo.dao.QuestionDao">
+
+    <select id="queryQuestion" resultType="com.zhihu.demo.model.Question">
+        SELECT q_id,release_time,content,pnum,cnum,user_id
+        from questions
+        order by release_time
+    </select>
+    <!--q_id,release_time,content,pnum,cnum,u_id-->
+    <select id="queryQuestionByu_id" resultType="com.zhihu.demo.model.Question" >
+        SELECT q_id,release_time,content,pnum,cnum,user_id
+        from questions
+        where user_id= #{userId}
+    </select>
+    <select id="queryQuestionByq_id" resultType="com.zhihu.demo.model.Question" >
+        SELECT q_id,release_time,content,pnum,cnum,user_id
+        from questions
+        where q_id= #{q_id}
+    </select>
+    <!--useGeneratedKeys="true" keyProperty="q_id"-->
+    <!--keyColumn="q_id"-->
+    <insert id="insertQuestion" parameterType="com.zhihu.demo.model.Question">
+        INSERT INTO
+        questions(release_time,content,user_id)
+        VALUES
+        (#{release_time},#{content},#{userId})
+    </insert>
+    <update id="updataQuestion" parameterType="com.zhihu.demo.model.Question">
+    update questions
+        <set>
+            <if test="pnum!=null">pnum=#{pnum},</if>
+            <if test="cnum!=null">cnum=#{cnum}</if>
+            <!--<if test="lastEditTime!=null">last_edit_time=#{lastEditTime}</if>-->
+        </set>
+        where q_id=#{q_id}
+    </update>
+    <delete id="deleteQuestion">
+        DELETE FROM
+        questions
+        where q_id=#{q_id}
+    </delete>
+</mapper>
