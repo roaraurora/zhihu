@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhihu.demo.dao.CommentDao">
+
+    <select id="queryCommentByQid" resultType="com.zhihu.demo.model.Comment">
+        SELECT c_id,q_id,u_id,release_time,content,pnum
+        from comments
+        where
+        q_id=#{q_id}
+        order by release_time
+        desc
+    </select>
+
+    <select id="queryCommentByUid" resultType="com.zhihu.demo.model.Comment">
+        SELECT c_id,q_id,u_id,release_time,content,pnum
+        from comments
+        where
+        u_id=#{u_id}
+        order by release_time
+        desc
+    </select>
+    <!--useGeneratedKeys="true" keyProperty="c_id"-->
+    <!--keyColumn="c_id"-->
+    <insert id="insertComment" parameterType="com.zhihu.demo.model.Comment">
+        INSERT INTO
+        comments(q_id,u_id,release_time,content,pnum)
+        VALUES
+        (#{q_id},#{u_id},#{release_time},#{content},#{pnum})
+    </insert>
+    <update id="updataComment" parameterType="com.zhihu.demo.model.Comment">
+        update comments
+        <set>
+            <if test="pnum!=null">pnum=#{pnum}</if>
+            <!--<if test="priority!=null">priotity=#{priotity}</if>-->
+            <!--<if test="lastEditTime!=null">last_edit_time=#{lastEditTime}</if>-->
+        </set>
+        where c_id=#{c_id}
+    </update>
+    <delete id="deleteComment">
+        DELETE FROM
+        comments
+        where c_id=#{c_id}
+    </delete>
+</mapper>

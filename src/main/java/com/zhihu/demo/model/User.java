@@ -1,18 +1,21 @@
 package com.zhihu.demo.model;
 
 public class User {
-    private Integer user_id;
+    private Integer u_id;
     private String email;
     private String username;
     private String password;
+    private Integer authority;
+    private Integer r_id;
 
-    public Integer getUser_id() {
-        return user_id;
+    public Integer getAuthority() {
+        return authority;
     }
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
+    public void setAuthority(Integer authority) {
+        this.authority = authority;
     }
+
 
     public String getEmail() {
         return email;
@@ -30,11 +33,27 @@ public class User {
         this.username = username;
     }
 
+    public Integer getU_id() {
+        return u_id;
+    }
+
+    public void setU_id(Integer u_id) {
+        this.u_id = u_id;
+    }
+
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Integer getR_id() {
+        return r_id;
+    }
+
+    public void setR_id(Integer r_id) {
+        this.r_id = r_id;
     }
 }

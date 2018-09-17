@@ -26,3 +26,9 @@ create sequence role_s
   increment by 1
   start with 1
   maxvalue 1000;
+
+
+-- create sequence mysequence1
+--   increment by 1
+--   start with 1
+--   maxvalue 1000;

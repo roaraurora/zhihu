@@ -3,7 +3,13 @@ create table users (
   email    varchar2(100) not null,
   password varchar2(100) not null,
   username varchar2(100) not null,
-  role_id  number        not null
+  photo varchar2(100) ,
+  role_id  number        not null,
+
+--    write by sun
+  grade number,
+  photo varchar2(100),
+
 );
 
 comment on table users
