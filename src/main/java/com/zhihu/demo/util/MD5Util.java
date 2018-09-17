@@ -1,6 +1,7 @@
 package com.zhihu.demo.util;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class MD5Util {
     }
 
     public static void main(String[] args) {
-        System.out.println(inputPassToDBPass("123456"));
         System.out.println(md5("123456"));
+        System.out.println(StringUtils.isEmpty(""));
     }
 }

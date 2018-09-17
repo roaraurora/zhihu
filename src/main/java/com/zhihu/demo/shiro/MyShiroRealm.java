@@ -1,9 +1,9 @@
 package com.zhihu.demo.shiro;
 
 import com.zhihu.demo.model.Role;
-import com.zhihu.demo.model.User;
 import com.zhihu.demo.service.RoleService;
 import com.zhihu.demo.service.UserService;
+import com.zhihu.demo.util.ConstantBean;
 import com.zhihu.demo.util.JWTUtil;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -27,9 +27,16 @@ public class MyShiroRealm extends AuthorizingRealm {
 
     private static final Logger logger = LoggerFactory.getLogger(MyShiroRealm.class);
 
+    private ConstantBean constantBean;
+
     private UserService userService;
 
     private RoleService roleService;
+
+    @Autowired
+    public void setConstantBean(ConstantBean constantBean) {
+        this.constantBean = constantBean;
+    }
 
     @Autowired
     public void setRoleService(RoleService roleService) {
@@ -56,10 +63,10 @@ public class MyShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        String email = JWTUtil.getEmail(principalCollection.toString());
+        String id = JWTUtil.getId(principalCollection.toString());
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         //设置用户角色
-        Role role = roleService.getRoleByUser(email);
+        Role role = roleService.getRoleByUserId(id);
         simpleAuthorizationInfo.addRole(role.getRoleName());
         //设置用户权限
         Set<String> permission = new HashSet<>(Arrays.asList(role.getPermission().split(",")));
@@ -73,15 +80,15 @@ public class MyShiroRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         String token = (String) authenticationToken.getCredentials();
-        String email = JWTUtil.getEmail(token);
-        if (email == null) {
+        String id = JWTUtil.getId(token);
+        if (id == null) {
             throw new AuthenticationException("token invalid");
         }
-        User user = userService.getUserByEmail(email);
-        boolean isCorrect = JWTUtil.verify(token, email, user.getPassword());
+//        User user = userService.getUserById(id);
+        boolean isCorrect = JWTUtil.verify(token, id, constantBean.getSecret());
         if (!isCorrect) {
             logger.error("MyShiroRealm.doGetAuthenticationInfo => verify " + false);
-            throw new AuthenticationException("Email or password error");//不管你token咋错了 都当作未认证/认证失败
+            throw new AuthenticationException("token invalid");//不管你token咋错了 都当作未认证/认证失败
         }
         return new SimpleAuthenticationInfo(token, token, "my_realm");
     }

@@ -6,12 +6,12 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Email;
 public class LoginVo {
 
-    @NotNull
     @Email
+    @NotNull
     private String email;
 
-    @NotNull
     @Length(min = 6,max = 32)
+    @NotNull
     private String password;
 
     public String getEmail() {

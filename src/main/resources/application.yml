@@ -20,8 +20,8 @@ spring:
     minEvictableIdleTimeMillis: 300000 #空闲连接的最小空闲时间pompokm,
   mail:
     host: smtp.office365.com
-    username: roaraurora@outlook.com
-    password: 6.62607004 #普朗克常数
+    username: ENC(/aj0rf5PWJp7Vlf/OgbsQPXaOGVOOdtr+4f6wzlhNcU=)
+    password: ENC(CtOqcyMw5DQf4YVwu9I3Y4OCQlzhd6Ho)
     properties:
       mail:
         smtp:
@@ -35,6 +35,17 @@ spring:
     mode: HTML
     prefix: classpath:/templates/
     suffix: .html
+  rabbitmq:
+    username: ENC(E5R3ZojVQGrWtr7uS6qHZw==)
+    password: ENC(m6e+cwbN8Ueruc+lAOPjFA==)
+    host: ENC(UiZTlQTFdQRA5ms53lgyrXKnCEMT53WU)
+    port: 5672
+    virtual-host: /
+    #    开启手动ACK 不开启自动ACk模式 目的是防止报错后未正确处理消息丢失 默认为inone
+    listener:
+      simple:
+        acknowledge-mode: manual
+
 
 mybatis:
   type-aliases-package: com.zhihu.demo.model #给包中的类注册别名，注册后可以直接使用类名，而不用使用全限定的类名（就是不用包含包名）。
@@ -46,13 +57,30 @@ mybatis:
     use-generated-keys: true
     default-executor-type: reuse
     jdbc-type-for-null: NULL
-  mapper-locations: mapper/projectMapper.xml #mapper文件
+  mapper-locations: mapper/*.xml #mapper文件
 
 #constant
 com:
   zhihu:
     demo:
       constant:
-        salt: a_word # 密码盐
+        salt: sugar # 密码盐
         expire: 3600000 # 60*60*1000 token过期时间为一小时
         refresh: 2592000000 #30*24*60*60*1000 token刷新有效期为一个月
+        secret: hard_to_guess_string #用于颁发token的密钥 原是用用户的密码作为密钥加密 但那每次会引起不必要的数据库查询 TODO 也许应该加上定期更换密钥的策略
+#redis
+redis:
+  host: ENC(WUM1EDmvyumpz+l2Ac7KxKgTOH6RFTCW)
+  port: 6379
+  timeout: 3
+  password: ENC(bR8G8TrIvDJyYW0wsPD+AnP86ADbsGNJ)
+  poolMaxTotal: 10
+  poolMaxIdle: 10
+  poolMaxWait: 3
+
+# 配置文件加密key
+jasypt:
+  encryptor:
+    password: ${SECRET_KEY}
+
+

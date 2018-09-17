@@ -14,6 +14,8 @@ public class CodeMsg {
     public static final CodeMsg PASSWORD_ERR = new CodeMsg(500406, "user login password not correct"); //用户密码错误
     public static final CodeMsg VO_ERR = new CodeMsg(500407, "user vo error"); //请求数据有误 不符合vo校验规则
     public static final CodeMsg ROLE_NOT_FOUND = new CodeMsg(500408, "user's role is not found"); //未找到用户的系统角色
+    public static final CodeMsg EMAIL_ALREDY_USE = new CodeMsg(500409, "email already registered"); //邮箱已被注册
+    public static final CodeMsg CREATE_USER_FAIL = new CodeMsg(500410, "create user failed"); //创建用户失败 原因未知 与数据库有关;
 
     // by sun
     public static final CodeMsg INSERT_COMMENT_ERROR = new CodeMsg(700401, "insert comment error"); //未找到用户的系统角色

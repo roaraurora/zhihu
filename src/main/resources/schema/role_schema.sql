@@ -27,8 +27,4 @@ create sequence role_s
   start with 1
   maxvalue 1000;
 
-
--- create sequence mysequence1
---   increment by 1
---   start with 1
---   maxvalue 1000;
+alter table role add constraint UNIQUE_ROLE_NAME unique (role_name);
