@@ -33,7 +33,7 @@ public class RedisService {
 
     public <T> T get(KeyPrefix prefix, String key, Class<T> clazz) {
         /* *
-         * 获取单个对象 若为命中则返回null
+         * 获取单个对象 若未命中则返回null
          * @param [prefix, key, clazz]
          * @return T
          */
@@ -244,7 +244,6 @@ public class RedisService {
             List<String> list = jedis.lrange(realKey, offset * 20, offset * 20 + 20); //当offset超过5的时候 返回结果永远为null
             List<T> arrayList = new ArrayList<>();
             for (String aList : list) {
-                logger.info("序列化当中 => "+stringToBean(aList, clazz));
                 arrayList.add(stringToBean(aList, clazz));
             }
             return arrayList;

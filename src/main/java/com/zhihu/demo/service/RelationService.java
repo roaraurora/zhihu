@@ -3,12 +3,18 @@ package com.zhihu.demo.service;
 import com.zhihu.demo.redis.AnswerKey;
 import com.zhihu.demo.redis.RedisService;
 import com.zhihu.demo.redis.RelRedisService;
+import com.zhihu.demo.redis.UserKey;
 import com.zhihu.demo.util.ConstantBean;
-import com.zhihu.demo.vo.LikeVo;
+import com.zhihu.demo.vo.NeterVo;
+import com.zhihu.demo.vo.PageVo;
+import com.zhihu.demo.vo.RelVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.nio.ch.Net;
+
+import java.util.Set;
 
 @Service
 public class RelationService {
@@ -49,10 +55,10 @@ public class RelationService {
      *
      * @param likeVo like data object
      */
-    public void setLikeAnswer(LikeVo likeVo) {
-        String answerId = likeVo.getAnswerId();
-        boolean like = likeVo.isLike();
-        long id = Long.parseLong(userService.getUserIdFromSecurity())-constantBean.getUserseqstart();
+    public void setLikeAnswer(RelVo likeVo) {
+        String answerId = likeVo.getSubjectId();
+        boolean like = likeVo.isRel();
+        long id = Long.parseLong(userService.getUserIdFromSecurity()) - constantBean.getUserseqstart();
         relRedisService.setBit(AnswerKey.like, answerId, id, like);
     }
 
@@ -63,7 +69,7 @@ public class RelationService {
      * @param answerId answer
      */
     public boolean isLikeAnswer(String userId, String answerId) {
-        return relRedisService.getBit(AnswerKey.like, answerId, Long.parseLong(userId)-constantBean.getUserseqstart());
+        return relRedisService.getBit(AnswerKey.like, answerId, Long.parseLong(userId) - constantBean.getUserseqstart());
     }
 
     /**
@@ -74,4 +80,61 @@ public class RelationService {
     public long countLikeAnswer(String answerId) {
         return relRedisService.getCount(AnswerKey.like, answerId);
     }
+
+    /**
+     * 设置关注用户
+     */
+    public void setFollowUser(RelVo followVo) {
+        String fansId = userService.getUserIdFromSecurity();
+        String followerId = followVo.getSubjectId();
+        String followerName = userService.getUserById(followerId).getUsername();
+        String fansName = userService.getUserById(fansId).getUsername();
+        NeterVo follower = new NeterVo(followerId, followerName);
+        NeterVo fans = new NeterVo(fansId, fansName);
+        if (followVo.isRel()) {
+            //设为关注关系
+            relRedisService.zaddNet(followerId, fansId, follower, fans);
+        } else {
+            //取消关注关系
+            relRedisService.zremNet(followerId, fansId, follower, fans);
+        }
+    }
+
+    /**
+     * 获得对应页码的关注列表
+     */
+    public Set<NeterVo> getFollowers(PageVo pageVo) {
+        String fansId = userService.getUserIdFromSecurity();
+        return relRedisService.zrange(UserKey.followKey, fansId, pageVo.getPage(), pageVo.getOffset(), NeterVo.class);
+    }
+
+    /**
+     * 获得id对应用户对neterVo的关注时间 为null时id不关注neterVo
+     */
+    public double isFollowsTime(String id, NeterVo neterVo) {
+        return relRedisService.zscore(UserKey.followKey, id, neterVo);
+    }
+
+    /**
+     * 获得id对应用户对neterVo的 被 关注时间 为null时id不被neterVo关注
+     */
+    public double isFansTime(String id, NeterVo neterVo) {
+        return relRedisService.zscore(UserKey.fansKey, id, neterVo);
+    }
+
+    /**
+     * 获得id对应用户的关注总数
+     */
+    public long countFollowers(String id) {
+        return relRedisService.zcard(UserKey.followKey, id);
+    }
+
+    /**
+     * 获得id对应用户的粉丝总数
+     */
+    public long countFans(String id) {
+        return relRedisService.zcard(UserKey.fansKey, id);
+    }
+
+
 }

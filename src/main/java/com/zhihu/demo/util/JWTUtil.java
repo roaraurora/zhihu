@@ -61,7 +61,7 @@ public class JWTUtil {
             //检查redis白名单 用户名对应的 key有没有对应的value
             //若redis没有命中 get方法返回null值
             String jti = redisService.get(UserKey.getById, id, String.class);
-            if (StringUtils.isEmpty(jti)) {
+            if (!jti.equals(getJti(token))) {
                 // "" or null
                 //已登出 或者 redis中找不到对应的key
                 return false;
@@ -69,7 +69,6 @@ public class JWTUtil {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             JWTVerifier verifier = JWT.require(algorithm)
                     .withClaim("id", id)
-                    .withJWTId(jti)
                     .build();
             verifier.verify(token);
             return true;
