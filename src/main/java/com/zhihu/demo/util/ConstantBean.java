@@ -15,6 +15,16 @@ public class ConstantBean {
 
     private int maxhistory;
 
+    private long userseqstart;
+
+    public long getUserseqstart() {
+        return userseqstart;
+    }
+
+    public void setUserseqstart(long userseqstart) {
+        this.userseqstart = userseqstart;
+    }
+
     public int getMaxhistory() {
         return maxhistory;
     }

@@ -106,7 +106,7 @@ public class InBoundChannelInterceptor implements ChannelInterceptor {
                 logger.info(this.getClass().getCanonicalName() + "订阅消息发送" + sent);
                 applicationContext.publishEvent(new MyApplicationEvent(principal, userId));
                 String sessionId = accessor.getSessionId();
-                applicationContext.publishEvent(new CheckMessageEvent("", userId,sessionId)); //发布检查message的事件 
+                applicationContext.publishEvent(new CheckMessageEvent("", userId,sessionId)); //发布检查message的事件
             }
             if (StompCommand.DISCONNECT.equals(stompCommand)) {
                 logger.info(this.getClass().getCanonicalName() + "用户断开连接成功");
