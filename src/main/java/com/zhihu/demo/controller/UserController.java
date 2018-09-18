@@ -8,6 +8,7 @@ import com.zhihu.demo.util.ConstantBean;
 import com.zhihu.demo.vo.LoginVo;
 import com.zhihu.demo.vo.RegVo;
 import com.zhihu.demo.vo.TokenVo;
+import com.zhihu.demo.vo.validator.IsIllegal;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -61,6 +62,7 @@ public class UserController {
     }
 
     @PostMapping("/reg")
+    @IsIllegal
     public Result<Boolean> reg(@RequestBody @Valid RegVo regVo) throws GlobalException {
         userService.reg(regVo); //失败抛出异常
         return Result.success(true);

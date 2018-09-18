@@ -29,6 +29,6 @@ public class MyPrincipalHandshakeHandler extends DefaultHandshakeHandler {
     @Override
     protected Principal determineUser(ServerHttpRequest request, WebSocketHandler wsHandler, Map<String, Object> attributes) {
         logger.error("from determineUser");
-        return new MyPrincipal("kiddo");
+        return super.determineUser(request,wsHandler,attributes);
     }
 }

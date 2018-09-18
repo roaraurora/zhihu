@@ -1,8 +1,10 @@
 package com.zhihu.demo.controller;
 
-import com.zhihu.demo.service.WebSocketService;
+import com.zhihu.demo.result.Result;
+import com.zhihu.demo.service.MessageService;
 import com.zhihu.demo.vo.ReqMessageVo;
-import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import com.zhihu.demo.vo.GetMessageVo;
+import com.zhihu.demo.vo.HistoryMessageVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +14,15 @@ import org.springframework.messaging.handler.annotation.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -25,14 +32,14 @@ public class MessageController {
 
     private SimpMessagingTemplate simpMessagingTemplate;
 
-    private WebSocketService webSocketService;
+    private MessageService messageService;
 
     @Resource
     org.apache.shiro.mgt.SecurityManager securityManager;
 
     @Autowired
-    public void setWebSocketService(WebSocketService webSocketService) {
-        this.webSocketService = webSocketService;
+    public void setMessageService(MessageService messageService) {
+        this.messageService = messageService;
     }
 
     @Autowired
@@ -110,9 +117,26 @@ public class MessageController {
         return "welcome";
     }
 
+    /**
+     * 私信
+     * @param messageVo 私信主题
+     * @param principal 当前webSocket连接用户
+     */
     @MessageMapping("/message")
     public void sendMessage(@Valid ReqMessageVo messageVo, Principal principal) {
         logger.info("messageVo => " + messageVo.getMessage() + " principal => " + principal.getName());
-        webSocketService.sendPrivateMessage(messageVo,principal);
+        messageService.sendPrivateMessage(messageVo,principal);
+    }
+
+    /**
+     * 查看聊天记录
+     * @param getMessageVo
+     * @return
+     */
+    @PostMapping("/message/history")
+    @ResponseBody
+    public Result<List> loadHistory(@RequestBody @Valid GetMessageVo getMessageVo) {
+        List<HistoryMessageVo> listMsg = messageService.loadHistory(getMessageVo);
+        return Result.success(listMsg);
     }
 }

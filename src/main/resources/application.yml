@@ -68,6 +68,7 @@ com:
         expire: 3600000 # 60*60*1000 token过期时间为一小时
         refresh: 2592000000 #30*24*60*60*1000 token刷新有效期为一个月
         secret: hard_to_guess_string #用于颁发token的密钥 原是用用户的密码作为密钥加密 但那每次会引起不必要的数据库查询 TODO 也许应该加上定期更换密钥的策略
+        maxhistory: 100 #存储两个用户之间的聊天记录的redis list最大值
 #redis
 redis:
   host: ENC(WUM1EDmvyumpz+l2Ac7KxKgTOH6RFTCW)

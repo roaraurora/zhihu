@@ -1,6 +1,9 @@
 package com.zhihu.demo.websocket;
 
+import com.zhihu.demo.event.CheckMessageEvent;
 import com.zhihu.demo.event.MyApplicationEvent;
+import com.zhihu.demo.redis.RedisService;
+import com.zhihu.demo.redis.SessionKey;
 import com.zhihu.demo.shiro.JWTToken;
 import com.zhihu.demo.util.JWTUtil;
 import org.apache.shiro.SecurityUtils;
@@ -10,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.web.socket.WebSocketSession;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.stomp.StompCommand;
@@ -30,6 +34,13 @@ public class InBoundChannelInterceptor implements ChannelInterceptor {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private ApplicationContext applicationContext;
+
+    private RedisService redisService;
+
+    @Autowired
+    public void setRedisService(RedisService redisService) {
+        this.redisService = redisService;
+    }
 
     @Autowired
     public void setApplicationContext(ApplicationContext applicationContext) {
@@ -55,26 +66,29 @@ public class InBoundChannelInterceptor implements ChannelInterceptor {
      */
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
-        logger.info(this.getClass().getCanonicalName() + " 消息发送前");
         StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
         StompCommand command = accessor != null ? accessor.getCommand() : null;
         String sessionId = accessor != null ? accessor.getSessionId() : null;
-        if (StompCommand.CONNECT.equals(command)) {
-            //绑定securityManager到ThreadContext
-            ThreadContext.bind(securityManager);
-
-            String authorization = accessor.getFirstNativeHeader("Authorization");
-            logger.info("接收到的token为 => " + authorization);
-            JWTToken token = new JWTToken(authorization);
-            Subject subject = SecurityUtils.getSubject();
-            subject.login(token); //token verify失败时抛出 AuthenticationException异常
-            String username = JWTUtil.getId(authorization);
-            logger.info("[命令: 连接] 用户为 => " + username + " 登录状态： " + subject.isAuthenticated());
-            MyPrincipal principal = new MyPrincipal(username);
-            accessor.setUser(principal);//这是消息能发送到目标用户的关键
-        }
-        if (StompCommand.SUBSCRIBE.equals(command)) {
-            //处理用户订阅消息的权限验证
+        if (command != null) {
+            logger.info(this.getClass().getCanonicalName() + " 消息发送前");
+            if (StompCommand.CONNECT.equals(command)) {
+                //绑定securityManager到ThreadContext
+                ThreadContext.bind(securityManager);
+                String authorization = accessor.getFirstNativeHeader("Authorization");
+                logger.info("接收到的token为 => " + authorization);
+                JWTToken token = new JWTToken(authorization);
+                Subject subject = SecurityUtils.getSubject();
+                subject.login(token); //token verify失败时抛出 AuthenticationException异常
+                String userId = JWTUtil.getId(authorization);
+                logger.info("[命令: 连接] 用户为 => " + userId + " 登录状态： " + subject.isAuthenticated());
+                MyPrincipal principal = new MyPrincipal(userId);
+                accessor.setUser(principal);//这是消息能发送到目标用户的关键
+                redisService.set(SessionKey.getById, userId, sessionId);//将用户的连接信息存入缓存
+//                applicationContext.publishEvent(new CheckMessageEvent("", userId,sessionId)); //发布检查message的事件 此时发布事件似乎客户端并没有真正连接上
+            }
+            if (StompCommand.SUBSCRIBE.equals(command)) {
+                //处理用户订阅消息的权限验证
+            }
         }
         return message; //return null会使得建立了websocket连接但无法发送数据
     }
@@ -86,14 +100,17 @@ public class InBoundChannelInterceptor implements ChannelInterceptor {
         if (stompCommand != null) {
             logger.info(this.getClass().getCanonicalName() + " 消息发送后 类型为" + stompCommand.getMessageType());
             //CONNECT, CONNECT_ACK, MESSAGE, SUBSCRIBE, UNSUBSCRIBE, HEARTBEAT, DISCONNECT, DISCONNECT_ACK, OTHER;
+            Principal principal = accessor.getUser();
+            String userId = principal != null ? principal.getName() : null;
             if (StompCommand.SUBSCRIBE.equals(stompCommand)) {
                 logger.info(this.getClass().getCanonicalName() + "订阅消息发送" + sent);
-                Principal principal = accessor.getUser();
-                String username = principal.getName();
-                applicationContext.publishEvent(new MyApplicationEvent(principal, username));
+                applicationContext.publishEvent(new MyApplicationEvent(principal, userId));
+                String sessionId = accessor.getSessionId();
+                applicationContext.publishEvent(new CheckMessageEvent("", userId,sessionId)); //发布检查message的事件 
             }
             if (StompCommand.DISCONNECT.equals(stompCommand)) {
                 logger.info(this.getClass().getCanonicalName() + "用户断开连接成功");
+                redisService.delete(SessionKey.getById,userId);//用户断开连接时删除用户信息
             }
         }
     }

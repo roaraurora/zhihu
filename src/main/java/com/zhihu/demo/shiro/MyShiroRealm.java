@@ -80,6 +80,7 @@ public class MyShiroRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         String token = (String) authenticationToken.getCredentials();
+//        logger.info(token);
         String id = JWTUtil.getId(token);
         if (id == null) {
             throw new AuthenticationException("token invalid");

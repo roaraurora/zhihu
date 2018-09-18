@@ -13,6 +13,16 @@ public class ConstantBean {
 
     private String secret;
 
+    private int maxhistory;
+
+    public int getMaxhistory() {
+        return maxhistory;
+    }
+
+    public void setMaxhistory(int maxhistory) {
+        this.maxhistory = maxhistory;
+    }
+
     public String getSecret() {
         return secret;
     }

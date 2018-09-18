@@ -1,6 +1,6 @@
 package com.zhihu.demo.event;
 
-import org.springframework.context.ApplicationEvent;
+        import org.springframework.context.ApplicationEvent;
 
 public class MyApplicationEvent extends ApplicationEvent {
 

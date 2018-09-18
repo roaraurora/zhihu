@@ -1,9 +1,6 @@
 package com.zhihu.demo.config;
 
-import com.zhihu.demo.websocket.InBoundChannelInterceptor;
-import com.zhihu.demo.websocket.MyHandShakeInterceptor;
-import com.zhihu.demo.websocket.MyPrincipalHandshakeHandler;
-import com.zhihu.demo.websocket.OutBoundChannelInterceptor;
+import com.zhihu.demo.websocket.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -12,6 +9,7 @@ import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 
 @Configuration
 @EnableWebSocketMessageBroker //使用stomp协议来传输基于消息代理的消息
@@ -23,6 +21,20 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     private MyHandShakeInterceptor myHandShakeInterceptor;
 
     private OutBoundChannelInterceptor outBoundChannelInterceptor;
+
+    private MyPrincipalHandshakeHandler myPrincipalHandshakeHandler;
+
+    private MyWebSocketHandlerDecoratorFactory myWebSocketHandlerDecoratorFactory;
+
+    @Autowired
+    public void setMyWebSocketHandlerDecoratorFactory(MyWebSocketHandlerDecoratorFactory myWebSocketHandlerDecoratorFactory) {
+        this.myWebSocketHandlerDecoratorFactory = myWebSocketHandlerDecoratorFactory;
+    }
+
+    @Autowired
+    public void setMyPrincipalHandshakeHandler(MyPrincipalHandshakeHandler myPrincipalHandshakeHandler) {
+        this.myPrincipalHandshakeHandler = myPrincipalHandshakeHandler;
+    }
 
     @Autowired
     public void setOutBoundChannelInterceptor(OutBoundChannelInterceptor outBoundChannelInterceptor) {
@@ -48,7 +60,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint("/endpoint")
                 .setAllowedOrigins("*")
                 .addInterceptors(myHandShakeInterceptor)
-//                .setHandshakeHandler(myPrincipalHandshakeHandler)
+                .setHandshakeHandler(myPrincipalHandshakeHandler)
                 .withSockJS();
     }
 
@@ -69,14 +81,16 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
      */
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-//        registry.setApplicationDestinationPrefixes("/app");
+        registry.setApplicationDestinationPrefixes("/app");
         registry.enableStompBrokerRelay("/exchange", "/topic", "/queue", "/amp/queue")
+                .setAutoStartup(true)
                 .setRelayHost("120.79.223.90")
                 .setRelayPort(61613)
                 .setClientLogin("root")
                 .setClientPasscode("546449")
                 .setSystemLogin("root")
                 .setSystemPasscode("546449")
+                .setVirtualHost("/")
                 .setSystemHeartbeatSendInterval(5000)
                 .setSystemHeartbeatReceiveInterval(4000);
     }
@@ -91,5 +105,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void configureClientOutboundChannel(ChannelRegistration registration) {
         registration.interceptors(outBoundChannelInterceptor);
     }
+
+//    @Override
+//    public void configureWebSocketTransport(WebSocketTransportRegistration registry) {
+//        registry.addDecoratorFactory(myWebSocketHandlerDecoratorFactory);
+//    }
+
+
 
 }
