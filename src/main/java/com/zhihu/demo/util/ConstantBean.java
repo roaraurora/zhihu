@@ -17,6 +17,26 @@ public class ConstantBean {
 
     private long userseqstart;
 
+    private String sinausername;
+
+    private String sinapassword;
+
+    public String getSinausername() {
+        return sinausername;
+    }
+
+    public void setSinausername(String sinausername) {
+        this.sinausername = sinausername;
+    }
+
+    public String getSinapassword() {
+        return sinapassword;
+    }
+
+    public void setSinapassword(String sinapassword) {
+        this.sinapassword = sinapassword;
+    }
+
     public long getUserseqstart() {
         return userseqstart;
     }

@@ -1,9 +1,6 @@
 package com.zhihu.demo.service;
 
-import com.zhihu.demo.redis.AnswerKey;
-import com.zhihu.demo.redis.RedisService;
-import com.zhihu.demo.redis.RelRedisService;
-import com.zhihu.demo.redis.UserKey;
+import com.zhihu.demo.redis.*;
 import com.zhihu.demo.util.ConstantBean;
 import com.zhihu.demo.vo.NeterVo;
 import com.zhihu.demo.vo.PageVo;
@@ -28,6 +25,13 @@ public class RelationService {
     private UserService userService;
 
     private ConstantBean constantBean;
+
+    private QuestionService questionService;
+
+    @Autowired
+    public void setQuestionService(QuestionService questionService) {
+        this.questionService = questionService;
+    }
 
     @Autowired
     public void setConstantBean(ConstantBean constantBean) {
@@ -137,4 +141,23 @@ public class RelationService {
     }
 
 
+    public void setCollect(RelVo collectVo) {
+        //TODO 等加上 question title字段
+        String userId = userService.getUserIdFromSecurity();
+        String questionId = collectVo.getSubjectId();
+//        String title = questionService.getQuestionById(questionId).get();
+//        NeterVo neterVo = new NeterVo(questionId, title);
+//        if (collectVo.isRel()) {
+//            //设为关注关系
+//            relRedisService.zadd(ItemKey.collect, userId, neterVo);
+//        } else {
+//            //取消关注关系
+//            relRedisService.zrem(ItemKey.collect, userId, neterVo);
+//        }
+    }
+
+    public Set<NeterVo> getCollections(PageVo pageVo) {
+        String userId = userService.getUserIdFromSecurity();
+        return relRedisService.zrange(ItemKey.collect, userId, pageVo.getPage(), pageVo.getOffset(), NeterVo.class);
+    }
 }

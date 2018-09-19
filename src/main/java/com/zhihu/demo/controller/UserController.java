@@ -9,6 +9,9 @@ import com.zhihu.demo.vo.LoginVo;
 import com.zhihu.demo.vo.RegVo;
 import com.zhihu.demo.vo.TokenVo;
 import com.zhihu.demo.vo.validator.IsIllegal;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -20,8 +23,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
@@ -108,7 +109,9 @@ public class UserController {
     /**
      * 可用于重定向
      */
-    @RequestMapping(path = "/401")
+    @ApiOperation(value = "未认证",notes = "当访问此API 时 会返回一个未认证的信息",httpMethod = "GET",code = 401)
+    @ApiImplicitParams({@ApiImplicitParam(name = "TOKEN", value = "Authorization token", required = true, dataType = "string", paramType = "header")})
+    @PostMapping(path = "/401")
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public Result<String> unauthorized() {
         logger.info("constant :salt => " + constantBean.getSalt() + " refresh => " + constantBean.getRefresh() + " expire => " + constantBean.getExpire());

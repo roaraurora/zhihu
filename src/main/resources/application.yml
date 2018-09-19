@@ -71,6 +71,8 @@ com:
         secret: hard_to_guess_string #用于颁发token的密钥 原是用用户的密码作为密钥加密 但那每次会引起不必要的数据库查询 TODO 也许应该加上定期更换密钥的策略
         maxhistory: 100 #存储两个用户之间的聊天记录的redis list最大值
         userseqstart: 1000 #oracle数据库中用于user表自增ID的sequence的起始值
+        sinausername: 1612298314@qq.com
+        sinapassword: 3.1415926dc
 #redis
 redis:
   host: ENC(WUM1EDmvyumpz+l2Ac7KxKgTOH6RFTCW)

@@ -3,7 +3,7 @@ package com.zhihu.demo.websocket;
 import com.zhihu.demo.event.CheckMessageEvent;
 import com.zhihu.demo.event.MyApplicationEvent;
 import com.zhihu.demo.redis.RedisService;
-import com.zhihu.demo.redis.SessionKey;
+import com.zhihu.demo.redis.ItemKey;
 import com.zhihu.demo.shiro.JWTToken;
 import com.zhihu.demo.util.JWTUtil;
 import org.apache.shiro.SecurityUtils;
@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.web.socket.WebSocketSession;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.stomp.StompCommand;
@@ -83,7 +82,7 @@ public class InBoundChannelInterceptor implements ChannelInterceptor {
                 logger.info("[命令: 连接] 用户为 => " + userId + " 登录状态： " + subject.isAuthenticated());
                 MyPrincipal principal = new MyPrincipal(userId);
                 accessor.setUser(principal);//这是消息能发送到目标用户的关键
-                redisService.set(SessionKey.getById, userId, sessionId);//将用户的连接信息存入缓存
+                redisService.set(ItemKey.getById, userId, sessionId);//将用户的连接信息存入缓存
 //                applicationContext.publishEvent(new CheckMessageEvent("", userId,sessionId)); //发布检查message的事件 此时发布事件似乎客户端并没有真正连接上
             }
             if (StompCommand.SUBSCRIBE.equals(command)) {
@@ -110,7 +109,7 @@ public class InBoundChannelInterceptor implements ChannelInterceptor {
             }
             if (StompCommand.DISCONNECT.equals(stompCommand)) {
                 logger.info(this.getClass().getCanonicalName() + "用户断开连接成功");
-                redisService.delete(SessionKey.getById,userId);//用户断开连接时删除用户信息
+                redisService.delete(ItemKey.getById,userId);//用户断开连接时删除用户信息
             }
         }
     }

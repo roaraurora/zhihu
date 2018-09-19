@@ -3,11 +3,15 @@ package com.zhihu.demo.controller;
 import com.alibaba.fastjson.JSON;
 import com.zhihu.demo.config.RabbitConfig;
 import com.zhihu.demo.redis.RedisService;
-import com.zhihu.demo.redis.SessionKey;
+import com.zhihu.demo.redis.ItemKey;
 import com.zhihu.demo.result.Result;
 import com.zhihu.demo.service.MailService;
 import com.zhihu.demo.service.UserService;
+import com.zhihu.demo.util.ConstantBean;
+import com.zhihu.demo.util.GeneralUtils;
+import com.zhihu.demo.util.SinaPicBedUtil;
 import com.zhihu.demo.vo.Book;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -16,11 +20,12 @@ import org.springframework.amqp.support.converter.AbstractJavaTypeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/test")
@@ -37,6 +42,13 @@ public class TestController {
     private RedisService redisService;
 
     private AmqpTemplate amqpTemplate;
+
+    private ConstantBean constantBean;
+
+    @Autowired
+    public void setConstantBean(ConstantBean constantBean) {
+        this.constantBean = constantBean;
+    }
 
     @Autowired
     public void setAmqpTemplate(AmqpTemplate amqpTemplate) {
@@ -63,14 +75,14 @@ public class TestController {
         this.mailService = mailService;
     }
 
-    @RequestMapping("/mail")
+    @PostMapping("/mail")
     public Result<String> testMailContrller() {
         mailService.sendPlainTextMail("83080779@qq.com", "Test mail from Spring Boot Project", "o ha yo");
         return Result.success("test mail");
     }
 
 
-    @RequestMapping("/books")
+    @PostMapping("/books")
     public void defaultMessage() {
         Book book = new Book();
         book.setId("1");
@@ -87,13 +99,13 @@ public class TestController {
     /**
      * /exchange/exchangename/[routing_key]
      */
-    @RequestMapping("/exchange")
+    @PostMapping("/exchange")
     @SendTo("/exchange/stomp.exchange/get-response")
     public Result<Boolean> testExchange() {
         return Result.success(true);
     }
 
-    @RequestMapping("/defaultExchange")
+    @PostMapping("/defaultExchange")
     @SendTo("/queue/stomp-queue")
     public Result<Boolean> defaultExchange() {
         return Result.success(true);
@@ -108,10 +120,10 @@ public class TestController {
         return book;
     }
 
-    @RequestMapping("/send2user")
+    @PostMapping("/send2user")
     public Result<Boolean> sendTo() {
         String userId = userService.getUserIdFromSecurity();
-        String sessionId = redisService.get(SessionKey.getById, userId, String.class);
+        String sessionId = redisService.get(ItemKey.getById, userId, String.class);
         // 生成路由键值，生成规则如下: websocket订阅的目的地 + "-user" + websocket的sessionId值。生成值类似:
         String routingKey = getTopicRoutingKey("demo", sessionId); //"demo-user"+sessionId
         // 向amq.topic交换机发送消息，路由键为routingKey
@@ -119,11 +131,21 @@ public class TestController {
         Book book = new Book();
         book.setName("UnDead-Book");
         book.setId("123");
-        amqpTemplate.convertAndSend("amq.topic",routingKey, JSON.toJSONString(book));
+        amqpTemplate.convertAndSend("amq.topic", routingKey, JSON.toJSONString(book));
         return Result.success(true);
     }
 
     private String getTopicRoutingKey(String actualDestination, String sessionId) {
         return actualDestination + "-user" + sessionId;
+    }
+
+    @PostMapping("/sina/upload")
+    @ResponseBody
+    public Result<List<String>> upload(@RequestParam("file") MultipartFile[] multipartFiles,
+                                       @RequestParam(value = "size", required = false, defaultValue = "0") Integer size) throws Exception {
+        String base64name = GeneralUtils.base64Encode(constantBean.getSinausername());
+        String cookies = SinaPicBedUtil.getSinaCookie(base64name, constantBean.getSinapassword());// 持久化起来 不用每次都登录 一般失效7天左右
+        List<String> url = SinaPicBedUtil.uploadFile(multipartFiles, cookies, size);
+        return Result.success(url);
     }
 }

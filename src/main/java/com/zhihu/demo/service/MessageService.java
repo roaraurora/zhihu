@@ -3,7 +3,7 @@ package com.zhihu.demo.service;
 import com.alibaba.fastjson.JSON;
 import com.zhihu.demo.model.User;
 import com.zhihu.demo.redis.RedisService;
-import com.zhihu.demo.redis.SessionKey;
+import com.zhihu.demo.redis.ItemKey;
 import com.zhihu.demo.redis.UserKey;
 import com.zhihu.demo.vo.ReqMessageVo;
 import com.zhihu.demo.vo.RespMessageVo;
@@ -61,7 +61,7 @@ public class MessageService {
         Long sendTime = System.currentTimeMillis();
         String username = sender.getUsername();
         RespMessageVo respMessageVo = new RespMessageVo(message, userId, sendTime, username); //respMessageVo中只储存sender的信息
-        String sessionId = redisService.get(SessionKey.getById, subjectId, String.class); //接收者的sessionId
+        String sessionId = redisService.get(ItemKey.getById, subjectId, String.class); //接收者的sessionId
         if (StringUtils.isEmpty(sessionId)) {
             //未命中redis时 缓存消息信息
             redisService.rpush(UserKey.messageKey, subjectId, respMessageVo);

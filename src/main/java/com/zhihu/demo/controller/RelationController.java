@@ -60,7 +60,7 @@ public class RelationController {
     @PostMapping("/followers")
     @RequiresPermissions(logical = Logical.AND, value = {"view", "post"})
     public Result<Set> getFollowers(@RequestBody @Valid PageVo pageVo) {
-        Set<NeterVo> set =  relationService.getFollowers(pageVo);
+        Set<NeterVo> set = relationService.getFollowers(pageVo);
         return Result.success(set);
     }
 
@@ -69,9 +69,24 @@ public class RelationController {
      * 邀请 邀请-通知 和未读消息一套系统
      * list
      */
+    
+
     /**
-     * 收藏 同关注
+     * 收藏 同关注 主体是问题
      * sort set
      */
+    @PostMapping("/collect")
+    @RequiresPermissions(logical = Logical.AND, value = {"view", "post"})
+    public Result<Boolean> collect(@RequestBody @Valid RelVo collectVo) {
+        relationService.setCollect(collectVo);
+        return Result.success(true);
+    }
+
+    @PostMapping("/collections")
+    @RequiresPermissions(logical = Logical.AND, value = {"view", "post"})
+    public Result<Set> collections(@RequestBody @Valid PageVo pageVo) {
+        Set<NeterVo> set = relationService.getCollections(pageVo);
+        return Result.success(set);
+    }
 
 }

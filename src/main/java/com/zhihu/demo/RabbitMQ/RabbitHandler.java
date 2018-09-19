@@ -1,4 +1,4 @@
-package com.zhihu.demo.rabbitMQ;
+package com.zhihu.demo.RabbitMQ;
 
 import com.alibaba.fastjson.JSON;
 import com.zhihu.demo.config.RabbitConfig;
@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 
 @Component
 public class RabbitHandler {
+
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private UserService userService;
