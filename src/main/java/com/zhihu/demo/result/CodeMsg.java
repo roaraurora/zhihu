@@ -51,7 +51,7 @@ public class CodeMsg {
         this.code = code;
     }
 
-    String getMsg() {
+    public String getMsg() {
         return msg;
     }
 

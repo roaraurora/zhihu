@@ -5,6 +5,7 @@ import com.zhihu.demo.service.MessageService;
 import com.zhihu.demo.vo.ReqMessageVo;
 import com.zhihu.demo.vo.GetMessageVo;
 import com.zhihu.demo.vo.HistoryMessageVo;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,6 +134,7 @@ public class MessageController {
      * @param getMessageVo
      * @return
      */
+    @ApiOperation(value = "聊天记录",notes = "通过此接口请求聊天记录 可通过页码一次取20条",httpMethod = "POST")
     @PostMapping("/message/history")
     @ResponseBody
     public Result<List> loadHistory(@RequestBody @Valid GetMessageVo getMessageVo) {

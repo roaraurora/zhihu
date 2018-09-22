@@ -42,8 +42,8 @@ public class JasyptUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println(encryptPwd("nosense_and_hard_to_guess_string","120.79.223.90"));
-//        System.out.println(decryptPwd("nosense_and_hard_to_guess_string",""));
+//        System.out.println(encryptPwd("","3."));
+//        System.out.println(decryptPwd("",""));
 //        System.out.println(System.getenv("SECRET_KEY")); //
     }
 }

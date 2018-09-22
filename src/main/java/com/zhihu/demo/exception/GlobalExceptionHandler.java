@@ -3,6 +3,8 @@ package com.zhihu.demo.exception;
 import com.zhihu.demo.result.CodeMsg;
 import com.zhihu.demo.result.Result;
 import org.apache.shiro.ShiroException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
@@ -15,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestControllerAdvice //可以指定范围
 public class GlobalExceptionHandler {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
      * 当用户没有权限(Authentication / permission / role)时被导向此处
@@ -31,6 +35,7 @@ public class GlobalExceptionHandler {
         e.printStackTrace(); //打印堆栈
         if (e instanceof GlobalException) {
             GlobalException exception = (GlobalException) e;
+            logger.error(exception.getCodeMsg().getMsg());
             return Result.error(exception.getCodeMsg());
         } else if (e instanceof BindException) {
             return Result.error(CodeMsg.VO_ERR);

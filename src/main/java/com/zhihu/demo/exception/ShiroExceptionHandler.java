@@ -33,8 +33,8 @@ public class ShiroExceptionHandler implements ErrorController {
     public Result<Object> error(HttpServletResponse response, HttpServletRequest request) {
         Exception exception = (Exception) request.getAttribute("javax.servlet.error.exception");
         if (exception == null) {
-//            throw new GlobalException(new CodeMsg(response.getStatus(), "Exception send to ErrorController"));
             logger.warn("有未知异常被发往 /error");
+            throw new GlobalException(new CodeMsg(response.getStatus(), "Exception send to ErrorController"));
         }
         Throwable cause = exception.getCause();
         if (cause instanceof AuthenticationException) {

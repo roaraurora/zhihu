@@ -130,7 +130,7 @@ public class JWTUtil {
         }
     }
 
-    public static String refreshToken(String token) {
+    public static String  refreshToken(String token) {
         if (allowRefresh(token)) {
             String id = getId(token);
 //            User user = userService.getUserById(id); 使用用户的密码加密将引起不必要的数据库查询

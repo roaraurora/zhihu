@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-public class RabbitConfig {
+public class    RabbitConfig {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 

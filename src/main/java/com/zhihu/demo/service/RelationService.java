@@ -111,7 +111,13 @@ public class RelationService {
         String fansId = userService.getUserIdFromSecurity();
         return relRedisService.zrange(UserKey.followKey, fansId, pageVo.getPage(), pageVo.getOffset(), NeterVo.class);
     }
-
+    /**
+     * 获得对应页码的粉丝列表
+     */
+    public Set<NeterVo> getFans(PageVo pageVo) {
+        String followerId = userService.getUserIdFromSecurity();
+        return relRedisService.zrange(UserKey.fansKey, followerId, pageVo.getPage(), pageVo.getOffset(), NeterVo.class);
+    }
     /**
      * 获得id对应用户对neterVo的关注时间 为null时id不关注neterVo
      */
@@ -160,4 +166,5 @@ public class RelationService {
         String userId = userService.getUserIdFromSecurity();
         return relRedisService.zrange(ItemKey.collect, userId, pageVo.getPage(), pageVo.getOffset(), NeterVo.class);
     }
+
 }
