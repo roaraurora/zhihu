@@ -29,8 +29,6 @@ public class MyShiroRealm extends AuthorizingRealm {
 
     private ConstantBean constantBean;
 
-    private UserService userService;
-
     private RoleService roleService;
 
     @Autowired
@@ -41,11 +39,6 @@ public class MyShiroRealm extends AuthorizingRealm {
     @Autowired
     public void setRoleService(RoleService roleService) {
         this.roleService = roleService;
-    }
-
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
     }
 
     /**
@@ -84,7 +77,6 @@ public class MyShiroRealm extends AuthorizingRealm {
         if (id == null) {
             throw new AuthenticationException("token invalid");
         }
-//        User user = userService.getUserById(id);
         boolean isCorrect = JWTUtil.verify(token, id, constantBean.getSecret());
         if (!isCorrect) {
             logger.error("MyShiroRealm.doGetAuthenticationInfo => verify " + false);

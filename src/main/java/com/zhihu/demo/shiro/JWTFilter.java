@@ -54,6 +54,8 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
         if (isLoginAttempt(request, response)) {
             executeLogin(request, response);
         }
+        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        logger.info("Shiro Filter ＝＞　" + httpServletRequest.getRequestURI());
         return true;
     }
 

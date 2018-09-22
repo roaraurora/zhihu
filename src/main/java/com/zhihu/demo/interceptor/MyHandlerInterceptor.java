@@ -18,7 +18,7 @@ public class MyHandlerInterceptor extends HandlerInterceptorAdapter {
         response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
         response.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS,PUT,DELETE");
         response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
-        logger.warn(request.getRequestURI());
+        logger.info(request.getRequestURI());
         if (request.getRequestURI().equals("/endpoint/info")) {
             //sockjs 需要这个字段
             response.setHeader("Access-Control-Allow-Credentials", "true");
@@ -28,6 +28,6 @@ public class MyHandlerInterceptor extends HandlerInterceptorAdapter {
             response.setStatus(HttpStatus.OK.value());
             return false;
         }
-        return super.preHandle(request,response,handler);
+        return super.preHandle(request, response, handler);
     }
 }

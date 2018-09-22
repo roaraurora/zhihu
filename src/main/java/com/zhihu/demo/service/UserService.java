@@ -16,6 +16,7 @@ import com.zhihu.demo.vo.LoginVo;
 import com.zhihu.demo.vo.MailVo;
 import com.zhihu.demo.vo.RegVo;
 import com.zhihu.demo.vo.TokenVo;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
@@ -149,12 +150,16 @@ public class UserService {
     }
 
     /**
-     * 更加被加密过后的用户id 激活相应的用户
+     * 根据 被加密过后的用户id 激活相应的用户
      *
      * @param cryptoUserId 被加密过后又的用户id
      */
     public void active(String cryptoUserId, HttpServletResponse response) {
         String userId = JasyptUtil.decryptPwd(constantBean.getSalt(), cryptoUserId);
+        if (!StringUtils.isNumeric(userId)) {
+            //不是数字直接返回 省得查询数据库
+            return;
+        }
         logger.info("userid => " + userId);
         User user = getUserById(userId); //没有直接报错
         if (roleService.getRoleByUserId(userId).getRoleName().equals("inactivated")) {

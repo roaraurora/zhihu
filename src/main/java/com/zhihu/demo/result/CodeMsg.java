@@ -16,7 +16,8 @@ public class CodeMsg {
     public static final CodeMsg ROLE_NOT_FOUND = new CodeMsg(500408, "user's role is not found"); //未找到用户的系统角色
     public static final CodeMsg EMAIL_ALREDY_USE = new CodeMsg(500409, "email already registered"); //邮箱已被注册
     public static final CodeMsg CREATE_USER_FAIL = new CodeMsg(500410, "create user failed"); //创建用户失败 原因未知 与数据库有关;
-
+    public static final CodeMsg MISSING_PARAM = new CodeMsg(500411, "missing request param"); //请求参数缺少;
+    public static final CodeMsg UNSUPPORTED_METHOD = new CodeMsg(500412, "unsupported request method"); //请求方法有误;
     // by sun
     public static final CodeMsg INSERT_COMMENT_ERROR = new CodeMsg(700401, "插入评论错误");
     public static final CodeMsg COMMENT_IS_NULL = new CodeMsg(700402, "评论为空");
@@ -50,7 +51,7 @@ public class CodeMsg {
         this.code = code;
     }
 
-    String getMsg() {
+    public String getMsg() {
         return msg;
     }
 

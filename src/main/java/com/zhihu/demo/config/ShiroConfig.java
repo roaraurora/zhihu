@@ -39,8 +39,16 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/user/login", "anon");
         filterChainDefinitionMap.put("/user/reg", "anon");
         filterChainDefinitionMap.put("/mail/activation/**", "anon");
+        filterChainDefinitionMap.put("/webjars/**", "anon");
+        filterChainDefinitionMap.put("/swagger-resources/**", "anon");
+        filterChainDefinitionMap.put("/swagger-ui.html", "anon");
+        filterChainDefinitionMap.put("/csrf", "anon");
+        filterChainDefinitionMap.put("/", "anon");
+        filterChainDefinitionMap.put("/v2/api-docs", "anon");
         filterChainDefinitionMap.put("/401", "anon");
         filterChainDefinitionMap.put("/404", "anon");
+        filterChainDefinitionMap.put("/ws", "anon");
+        filterChainDefinitionMap.put("/upload", "anon");
         filterChainDefinitionMap.put("/**", "jwt");
         // 设置访问路由地址 /401 /404 不经过过滤器
 

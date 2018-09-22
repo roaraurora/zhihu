@@ -1,6 +1,5 @@
 package com.zhihu.demo.vo;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
 public class ReqMessageVo {

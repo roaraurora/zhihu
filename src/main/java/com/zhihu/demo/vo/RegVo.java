@@ -1,7 +1,9 @@
 package com.zhihu.demo.vo;
 
+import com.zhihu.demo.vo.validator.IsIllegal;
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.AssertFalse;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
@@ -9,6 +11,7 @@ public class RegVo {
 
     @NotNull
     @Length(max = 32)
+    @IsIllegal
     private String username;
 
     @Email

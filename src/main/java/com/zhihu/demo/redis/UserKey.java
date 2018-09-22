@@ -7,5 +7,7 @@ public class UserKey extends BasePrefix {
     }
 
     public static UserKey getById = new UserKey("id");
-    public static UserKey getByName = new UserKey("name");
+    public static UserKey followKey = new UserKey("follow");
+    public static UserKey fansKey = new UserKey("fans");
+    public static UserKey messageKey = new UserKey("message");
 }

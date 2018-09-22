@@ -13,6 +13,46 @@ public class ConstantBean {
 
     private String secret;
 
+    private int maxhistory;
+
+    private long userseqstart;
+
+    private String sinausername;
+
+    private String sinapassword;
+
+    public String getSinausername() {
+        return sinausername;
+    }
+
+    public void setSinausername(String sinausername) {
+        this.sinausername = sinausername;
+    }
+
+    public String getSinapassword() {
+        return sinapassword;
+    }
+
+    public void setSinapassword(String sinapassword) {
+        this.sinapassword = sinapassword;
+    }
+
+    public long getUserseqstart() {
+        return userseqstart;
+    }
+
+    public void setUserseqstart(long userseqstart) {
+        this.userseqstart = userseqstart;
+    }
+
+    public int getMaxhistory() {
+        return maxhistory;
+    }
+
+    public void setMaxhistory(int maxhistory) {
+        this.maxhistory = maxhistory;
+    }
+
     public String getSecret() {
         return secret;
     }

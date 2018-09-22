@@ -3,9 +3,8 @@ create table users (
   email    varchar2(100) not null,
   password varchar2(100) not null,
   username varchar2(100) not null,
-  photo varchar2(100) ,
-  role_id  number        not null,
-
+  avatar   varchar2(100) not null,
+  role_id  number        not null
 );
 
 comment on table users
@@ -19,6 +18,8 @@ comment on column users.username
 is '用户名';
 comment on column users.password
 is '用户密码';
+comment on column users.avatar
+is '用户头像';
 comment on column users.role_id
 is '用户对应的系统角色的id';
 
@@ -37,7 +38,8 @@ REFERENCES role (role_id)
 on delete cascade;
 
 -- 唯一性约束
-alter table users add constraint UNIQUE_USER_EMAIL unique (email);
+alter table users
+  add constraint UNIQUE_USER_EMAIL unique (email);
 
 create sequence users_s
   increment by 1

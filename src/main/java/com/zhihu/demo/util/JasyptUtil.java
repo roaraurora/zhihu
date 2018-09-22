@@ -42,5 +42,8 @@ public class JasyptUtil {
     }
 
     public static void main(String[] args) {
+//        System.out.println(encryptPwd("","3."));
+//        System.out.println(decryptPwd("",""));
+//        System.out.println(System.getenv("SECRET_KEY")); //
     }
 }
