@@ -145,6 +145,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
+        <!--引入分页工具-->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>1.2.7</version>
+        </dependency>
         <!--stompBrokerRelayMessageHandler-->
         <!-- https://mvnrepository.com/artifact/io.projectreactor/reactor-net -->
         <dependency>
