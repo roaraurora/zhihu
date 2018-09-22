@@ -23,9 +23,18 @@ public class CommentController {
      * @param qid  问题id
      * @return  对应的评论集
      */
+    /**
+     * 根据问题的id查询对应的评论   测
+     * @param qid   问题id
+     * @param pageNum   要访问的页数
+     * @param pageSize  页面的大小
+     * @return
+     */
     @GetMapping("/querycommentbyqid/{qid}")
-    public Result<List<Comment>> queryCommentByQid(@PathVariable("qid") Integer qid) {
-        return Result.success(commentService.queryCommentByQid(qid));
+    public Result<List<Comment>> queryCommentByQid(@PathVariable("qid") Integer qid,
+                                                   @PathVariable("qid") Integer pageNum,
+                                                   @PathVariable("qid") Integer pageSize) {
+        return Result.success(commentService.queryCommentByQid(qid,pageNum,pageSize));
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.zhihu.demo.service;
 
+import com.github.pagehelper.PageHelper;
 import com.zhihu.demo.dao.CommentDao;
 import com.zhihu.demo.dao.QuestionDao;
 import com.zhihu.demo.exception.GlobalException;
@@ -33,13 +34,18 @@ public class CommentService {
         this.questionService = questionService;
     }
 
+
     /**
      * 根据问题找到对应的评论
      * @param q_id  问题的id
-     * @return 对应的评论
+     * @param pageNum  要第几页
+     * @param pageSize  每页的大小
+     * @return  对应的评论
      */
-    public List<Comment> queryCommentByQid(int q_id) {
-        return commentDao.queryCommentByQid(q_id);
+    public List<Comment> queryCommentByQid(int q_id,int pageNum,int pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<Comment> commentList = commentDao.queryCommentByQid(q_id);
+        return commentList;
     }
 
     /**

@@ -57,6 +57,7 @@ mybatis:
     use-generated-keys: true
     default-executor-type: reuse
     jdbc-type-for-null: NULL
+    plugin: interceptor="com.github.pagehelper.PageInterceptor"
   mapper-locations: mapper/*.xml #mapper文件
 
 #constant
