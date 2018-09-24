@@ -9,6 +9,24 @@ public class Question {
     private Integer pnum;
     private Integer cnum;
     private Integer userId;
+    private String title;
+    private Integer lnum;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Integer getLnum() {
+        return lnum;
+    }
+
+    public void setLnum(Integer lnum) {
+        this.lnum = lnum;
+    }
 
     public Integer getQ_id() {
         return q_id;
@@ -66,7 +84,9 @@ public class Question {
                 ", content='" + content + '\'' +
                 ", pnum=" + pnum +
                 ", cnum=" + cnum +
-                ", u_id=" + userId +
+                ", userId=" + userId +
+                ", title='" + title + '\'' +
+                ", lnum=" + lnum +
                 '}';
     }
 }

@@ -31,9 +31,9 @@ public class QuestionService {
     }
 
     /**
-     * 检索个人的评论表
+     * 检索个人的问题表
      * @param userId  用户的id
-     * @return 对应的评论表
+     * @return 对应的问题表
      */
     public List<Question> getQuestionListByUID(int userId) {
         return questionDao.queryQuestionByu_id(userId);
