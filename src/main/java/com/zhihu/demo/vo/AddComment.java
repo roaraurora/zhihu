@@ -2,19 +2,20 @@ package com.zhihu.demo.vo;
 
 import com.zhihu.demo.model.Comment;
 import com.zhihu.demo.model.Question;
+import com.zhihu.demo.service.UserService;
 
 public class AddComment {
     private String content;
-    private Integer userId;
-    private Integer q_id;
 
+    private UserService userService = new UserService();
+    private Integer q_id;
 
     private Integer cnum;
 
     public Comment getComment(){
         Comment comment = new Comment();
         comment.setQ_id(q_id);
-        comment.setUserId(userId);
+        comment.setUserId(Integer.parseInt(userService.getUserIdFromSecurity()));
         comment.setContent(content);
         return comment;
     }
@@ -30,14 +31,6 @@ public class AddComment {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
     }
 
     public Integer getQ_id() {

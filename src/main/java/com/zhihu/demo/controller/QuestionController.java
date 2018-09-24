@@ -3,6 +3,7 @@ package com.zhihu.demo.controller;
 import com.zhihu.demo.model.Question;
 import com.zhihu.demo.result.Result;
 import com.zhihu.demo.service.QuestionService;
+import com.zhihu.demo.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,13 +28,13 @@ public class QuestionController {
 
     /**
      * 根据用户id检索用户发布的问题    测
-     * @param id  包含问题列表的result    注意列表可能为空
      * @return 返回某个用户的所有问题
      */
     @ApiOperation(value = "检索个人问题",notes = "根据用户id检索用户发布的问题",httpMethod = "GET")
-    @GetMapping("/getquestionlistbyuid/{uid}")
-    public Result<List<Question>> getQuestionListByUID(@PathVariable("uid") Integer id){
-        return Result.success(questionService.getQuestionListByUID(id));
+    @GetMapping("/getquestionlistbyuid/")
+    public Result<List<Question>> getQuestionListByUID(){
+        UserService userService = new UserService();
+        return Result.success(questionService.getQuestionListByUID(Integer.parseInt(userService.getUserIdFromSecurity())));
     }
 
     /**

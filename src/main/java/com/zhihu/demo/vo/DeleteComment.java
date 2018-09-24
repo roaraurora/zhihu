@@ -6,7 +6,6 @@ import com.zhihu.demo.model.Question;
 public class DeleteComment {
     private Integer c_id;
     private Integer q_id;
-
     private Integer cnum;
 
     public Comment getComment(){

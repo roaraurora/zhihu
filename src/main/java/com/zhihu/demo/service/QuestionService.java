@@ -48,6 +48,8 @@ public class QuestionService {
     public Result<Question> addQuestion(Question question) {
         if(question.getContent()!=null&&!"".equals(question.getContent())){
             question.setRelease_time(new Date());
+            UserService userService = new UserService();
+            question.setUserId(Integer.parseInt(userService.getUserIdFromSecurity()));
             try {
                 int effectedNum = questionDao.insertQuestion(question);
                 if (effectedNum > 0) {
