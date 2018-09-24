@@ -59,8 +59,8 @@ public class QuestionController {
     }
 
     /**
-     * 修改评论或者点赞数
-     * @param question   要被修改的问题对象
+     * 修改评论数或者点赞数，或者浏览次数，
+     * @param question   要被修改的问题对象，具体需要问题的id和对应要修改的数据，
      * @return  返回一个result  修改成功的话data为要增加的对象，失败就失败
      */
     @ApiOperation(value = "修改评论或者点赞数",notes = "修改评论或者点赞数",httpMethod = "POST")
