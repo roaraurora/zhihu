@@ -7,7 +7,9 @@ create table QUESTIONS
   CONTENT      VARCHAR2(100) not null,
   PNUM         NUMBER default 0 not null,
   CNUM         NUMBER default 0 not null,
-  USER_ID      NUMBER not null
+  USER_ID      NUMBER not null,
+  TITLE        VARCHAR2(100) not null,
+  LNUM         NUMBER default 0 not null
 )
 
 alter table QUESTIONS
