@@ -30,7 +30,8 @@
     update questions
         <set>
             <if test="pnum!=null">pnum=#{pnum},</if>
-            <if test="cnum!=null">cnum=#{cnum}</if>
+            <if test="cnum!=null">cnum=#{cnum},</if>
+            <if test="lnum!=null">lnum=#{lnum}</if>
             <!--<if test="lastEditTime!=null">last_edit_time=#{lastEditTime}</if>-->
         </set>
         where q_id=#{q_id}

@@ -11,9 +11,7 @@ import com.zhihu.demo.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.*;
-
 @Service
 public class CommentService {
 
@@ -33,8 +31,6 @@ public class CommentService {
     public void setQuestionService(QuestionService questionService) {
         this.questionService = questionService;
     }
-
-
     /**
      * 根据问题找到对应的评论
      * @param q_id  问题的id
@@ -44,10 +40,8 @@ public class CommentService {
      */
     public List<Comment> queryCommentByQid(int q_id,int pageNum,int pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        List<Comment> commentList = commentDao.queryCommentByQid(q_id);
-        return commentList;
+        return commentDao.queryCommentByQid(q_id);
     }
-
     /**
      * 找到自己的评论及所属的问题
      * @param userId 用户id
@@ -67,7 +61,6 @@ public class CommentService {
         lists.add(questionList);
         return  lists;
     }
-
     /**
      * 添加评论
      * @param comment 要添加的评论
@@ -94,7 +87,6 @@ public class CommentService {
             throw new GlobalException(CodeMsg.COMMENT_IS_NULL);
         }
     }
-
     /**
      * 删除评论和修改对应评论上的评论数
      * @param comment 要删除的评论
@@ -118,7 +110,6 @@ public class CommentService {
             throw new GlobalException(CodeMsg.DELETE_COMMENT_ID_ERROR_);
         }
     }
-
     /**
      * 修改点赞数
      * @param comment  要修改的评论对象 包含c_id pnum
@@ -137,7 +128,6 @@ public class CommentService {
             } catch (Exception e) {
                 throw new GlobalException(new CodeMsg(-1,e.getMessage()));
             }
-
         } else {
             throw new GlobalException(CodeMsg.MODIFY_COMMENT_ID_ERROR);
         }
