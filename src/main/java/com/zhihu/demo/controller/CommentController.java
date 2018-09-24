@@ -4,6 +4,7 @@ import com.zhihu.demo.model.Comment;
 import com.zhihu.demo.model.Question;
 import com.zhihu.demo.result.Result;
 import com.zhihu.demo.service.CommentService;
+import com.zhihu.demo.service.UserService;
 import com.zhihu.demo.vo.AddComment;
 import com.zhihu.demo.vo.DeleteComment;
 import io.swagger.annotations.ApiOperation;
@@ -37,13 +38,13 @@ public class CommentController {
 
     /**
      * 根据用户的id查询评论   测
-     * @param uid  用户id
      * @return  对应的评论集
      */
     @ApiOperation(value = "查询个人评论",notes = "根据用户的id查询评论",httpMethod = "GET")
-    @GetMapping("/querycommentbyuid/{uid}")
-    public Result<List<List>> queryCommentByUid(@PathVariable("uid") Integer uid) {
-        return Result.success(commentService.queryCommentByUid(uid));
+    @GetMapping("/querycommentbyuid")
+    public Result<List<List>> queryCommentByUid() {
+        UserService userService = new UserService();
+        return Result.success(commentService.queryCommentByUid(Integer.parseInt(userService.getUserIdFromSecurity())));
     }
 
     /**
