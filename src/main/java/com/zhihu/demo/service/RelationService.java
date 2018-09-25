@@ -1,5 +1,6 @@
 package com.zhihu.demo.service;
 
+import com.zhihu.demo.model.Question;
 import com.zhihu.demo.redis.*;
 import com.zhihu.demo.util.ConstantBean;
 import com.zhihu.demo.vo.NeterVo;
@@ -153,18 +154,19 @@ public class RelationService {
         String questionId = collectVo.getSubjectId();
 //        String title = questionService.getQuestionById(questionId).get();
 //        NeterVo neterVo = new NeterVo(questionId, title);
-//        if (collectVo.isRel()) {
-//            //设为关注关系
-//            relRedisService.zadd(ItemKey.collect, userId, neterVo);
-//        } else {
-//            //取消关注关系
-//            relRedisService.zrem(ItemKey.collect, userId, neterVo);
-//        }
+        if (collectVo.isRel()) {
+            //设为关注关系
+            relRedisService.zadd(ItemKey.collect, userId, questionId);
+        } else {
+            //取消关注关系
+            relRedisService.zrem(ItemKey.collect, userId, questionId);
+        }
     }
 
-    public Set<NeterVo> getCollections(PageVo pageVo) {
+    public Set<Question> getCollections(PageVo pageVo) {
         String userId = userService.getUserIdFromSecurity();
-        return relRedisService.zrange(ItemKey.collect, userId, pageVo.getPage(), pageVo.getOffset(), NeterVo.class);
+        Set<String> idSet =  relRedisService.zrange(ItemKey.collect, userId, pageVo.getPage(), pageVo.getOffset(), String.class);
+        return null;
     }
 
 }
