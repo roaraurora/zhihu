@@ -10,8 +10,8 @@
         desc
     </select>
     <select id="getQuestionsByQids" resultType="com.zhihu.demo.model.Question">
-        SELECT q_id,release_time,content,pnum,cnum,title,lnum
-        from questions WHERE q_id in
+        SELECT q_id,release_time,content,pnum,cnum,title,lnum,username
+        from questions,USERS WHERE questions.user_id=users.user_id and q_id in
         <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
         #{item}
         </foreach>

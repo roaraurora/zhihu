@@ -98,9 +98,9 @@ public class RelationController {
     @ApiOperation(value = "收藏列表", notes = "返回用户的收藏列表 可传入页码和偏移量", httpMethod = "POST")
     @PostMapping("/collections")
     @RequiresPermissions(logical = Logical.AND, value = {"view", "post"})
-    public Result<Set<Question>> collections(@RequestBody @Valid PageVo pageVo) {
-        Set<Question> set = relationService.getCollections(pageVo);
-        return Result.success(set);
+    public Result<List<Question>> collections(@RequestBody @Valid PageVo pageVo) {
+        Result<List<Question>> set = relationService.getCollections(pageVo);
+        return set;
     }
 
 }

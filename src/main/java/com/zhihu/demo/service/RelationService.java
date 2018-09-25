@@ -2,6 +2,7 @@ package com.zhihu.demo.service;
 
 import com.zhihu.demo.model.Question;
 import com.zhihu.demo.redis.*;
+import com.zhihu.demo.result.Result;
 import com.zhihu.demo.util.ConstantBean;
 import com.zhihu.demo.vo.NeterVo;
 import com.zhihu.demo.vo.PageVo;
@@ -10,8 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.nio.ch.Net;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -163,10 +165,20 @@ public class RelationService {
         }
     }
 
-    public Set<Question> getCollections(PageVo pageVo) {
+    public Result<List<Question>> getCollections(PageVo pageVo) {
         String userId = userService.getUserIdFromSecurity();
         Set<String> idSet =  relRedisService.zrange(ItemKey.collect, userId, pageVo.getPage(), pageVo.getOffset(), String.class);
-        return null;
+        List<String> list1 = new ArrayList<String>(idSet);
+        List<Integer> list2 = parseIntegersList(list1);
+        return questionService.getQuestionByQids(list2);
+    }
+
+    private List<Integer> parseIntegersList(List<String> StringList) {
+        List<Integer> IntegerList = new ArrayList<Integer>();
+        for (String x : StringList) {
+            Integer z = Integer.parseInt(x);
+            IntegerList.add(z);
+        }      	return IntegerList;
     }
 
 }
