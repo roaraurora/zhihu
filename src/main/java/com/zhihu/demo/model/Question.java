@@ -3,14 +3,39 @@ package com.zhihu.demo.model;
 import java.util.Date;
 
 public class Question {
-    private Integer q_id;
-    private Date release_time;
+    private Integer qId;
+    private Date releaseTime;
     private String content;
     private Integer pnum;
     private Integer cnum;
     private Integer userId;
     private String title;
     private Integer lnum;
+    private String username;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Integer getqId() {
+        return qId;
+    }
+
+    public void setqId(Integer qId) {
+        this.qId = qId;
+    }
+
+    public Date getReleaseTime() {
+        return releaseTime;
+    }
+
+    public void setReleaseTime(Date releaseTime) {
+        this.releaseTime = releaseTime;
+    }
 
     public String getTitle() {
         return title;
@@ -28,21 +53,8 @@ public class Question {
         this.lnum = lnum;
     }
 
-    public Integer getQ_id() {
-        return q_id;
-    }
 
-    public void setQ_id(Integer q_id) {
-        this.q_id = q_id;
-    }
 
-    public Date getRelease_time() {
-        return release_time;
-    }
-
-    public void setRelease_time(Date release_time) {
-        this.release_time = release_time;
-    }
 
     public String getContent() {
         return content;
@@ -79,8 +91,8 @@ public class Question {
     @Override
     public String toString() {
         return "Question{" +
-                "q_id=" + q_id +
-                ", release_time=" + release_time +
+                "qId=" + qId +
+                ", releaseTime=" + releaseTime +
                 ", content='" + content + '\'' +
                 ", pnum=" + pnum +
                 ", cnum=" + cnum +

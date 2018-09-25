@@ -40,10 +40,10 @@ public class CommentDaoTest {
         Comment comment1 = new Comment();
 
         comment1.setUserId(1);
-        comment1.setQ_id(1);
+        comment1.setqId(1);
         comment1.setContent("this is a comment");
         comment1.setPnum(1);
-        comment1.setRelease_time(new Date());
+        comment1.setReleaseTime(new Date());
         int i;
         commentDao.insertComment(comment1);
 //        assertEquals(1, i);
@@ -58,7 +58,7 @@ public class CommentDaoTest {
     public void updataComment(){
         Comment comment1 = new Comment();
 
-        comment1.setC_id(1);
+        comment1.setcId(1);
 //        comment1.setU_id(1);
 //        comment1.setQ_id(1);
 //        comment1.setContent("this is a comment");

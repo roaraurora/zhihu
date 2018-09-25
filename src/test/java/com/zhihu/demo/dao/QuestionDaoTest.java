@@ -42,7 +42,7 @@ public class QuestionDaoTest {
     @Test
     public void insertQuestion() {
         Question question = new Question();
-        question.setRelease_time(new Date());
+        question.setReleaseTime(new Date());
         question.setContent("this is a question555555");
         question.setUserId(3);
         int i= questionDao.insertQuestion(question);
@@ -60,7 +60,7 @@ public class QuestionDaoTest {
     public void updataQuestion(){
         Question question = new Question();
 
-        question.setQ_id(1);
+        question.setqId(1);
         question.setCnum(3);
         question.setPnum(3);
         int i;

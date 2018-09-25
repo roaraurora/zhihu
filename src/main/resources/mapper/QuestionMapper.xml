@@ -3,9 +3,11 @@
 <mapper namespace="com.zhihu.demo.dao.QuestionDao">
 
     <select id="queryQuestion" resultType="com.zhihu.demo.model.Question">
-        SELECT q_id,release_time,content,pnum,cnum,user_id,title,lnum
-        from questions
+        SELECT q_id,release_time,content,pnum,cnum,title,lnum,username
+        from questions,users
+        WHERE questions.user_id=users.user_id
         order by release_time
+        desc
     </select>
     <!--q_id,release_time,content,pnum,cnum,u_id-->
     <select id="queryQuestionByu_id" resultType="com.zhihu.demo.model.Question" >
@@ -16,7 +18,7 @@
     <select id="queryQuestionByq_id" resultType="com.zhihu.demo.model.Question" >
         SELECT q_id,release_time,content,pnum,cnum,user_id,title,lnum
         from questions
-        where q_id= #{q_id}
+        where q_id= #{qId}
     </select>
     <!--useGeneratedKeys="true" keyProperty="q_id"-->
     <!--keyColumn="q_id"-->
@@ -24,7 +26,7 @@
         INSERT INTO
         questions(release_time,content,user_id,title)
         VALUES
-        (#{release_time},#{content},#{userId},#{tile})
+        (#{releaseTime},#{content},#{userId},#{title})
     </insert>
     <update id="updataQuestion" parameterType="com.zhihu.demo.model.Question">
     update questions
@@ -34,11 +36,11 @@
             <if test="lnum!=null">lnum=#{lnum}</if>
             <!--<if test="lastEditTime!=null">last_edit_time=#{lastEditTime}</if>-->
         </set>
-        where q_id=#{q_id}
+        where q_id=#{qId}
     </update>
     <delete id="deleteQuestion">
         DELETE FROM
         questions
-        where q_id=#{q_id}
+        where q_id=#{qId}
     </delete>
 </mapper>

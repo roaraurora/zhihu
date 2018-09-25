@@ -6,22 +6,20 @@ import com.zhihu.demo.service.UserService;
 
 public class AddComment {
     private String content;
-
-    private UserService userService = new UserService();
-    private Integer q_id;
-
+    private Integer qId;
     private Integer cnum;
 
     public Comment getComment(){
+        UserService userService = new UserService();
         Comment comment = new Comment();
-        comment.setQ_id(q_id);
+        comment.setqId(qId);
         comment.setUserId(Integer.parseInt(userService.getUserIdFromSecurity()));
         comment.setContent(content);
         return comment;
     }
     public Question getQuestion(){
         Question question = new Question();
-        question.setQ_id(q_id);
+        question.setqId(qId);
         question.setCnum(cnum);
         return question;
     }
@@ -33,12 +31,12 @@ public class AddComment {
         this.content = content;
     }
 
-    public Integer getQ_id() {
-        return q_id;
+    public Integer getqId() {
+        return qId;
     }
 
-    public void setQ_id(Integer q_id) {
-        this.q_id = q_id;
+    public void setqId(Integer qId) {
+        this.qId = qId;
     }
 
     public Integer getCnum() {
