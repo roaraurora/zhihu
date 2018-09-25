@@ -49,4 +49,6 @@ public interface QuestionDao {
      * @return  返回被影响的行数
      */
     int updataQuestion(Question question);
+
+    List<Question> getQuestionsByQids(List<Integer> list);
 }

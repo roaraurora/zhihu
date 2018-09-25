@@ -9,6 +9,15 @@
         order by release_time
         desc
     </select>
+    <select id="getQuestionsByQids" resultType="com.zhihu.demo.model.Question">
+        SELECT q_id,release_time,content,pnum,cnum,title,lnum
+        from questions WHERE q_id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+        #{item}
+        </foreach>
+        order by release_time
+        desc
+    </select>
     <!--q_id,release_time,content,pnum,cnum,u_id-->
     <select id="queryQuestionByu_id" resultType="com.zhihu.demo.model.Question" >
         SELECT q_id,release_time,content,pnum,cnum,user_id,title,lnum

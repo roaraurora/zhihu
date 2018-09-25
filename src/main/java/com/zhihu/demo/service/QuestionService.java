@@ -48,10 +48,13 @@ public class QuestionService {
     public Result<Question> addQuestion(Question question) {
         if(question.getContent()!=null&&!"".equals(question.getContent())){
             question.setReleaseTime(new Date());
+
             UserService userService = new UserService();
             question.setUserId(Integer.parseInt(userService.getUserIdFromSecurity()));
+//            question.setUserId(1);
+            System.out.println(question);
             System.out.println("---------------------------------------------------------------------------------------------------------------");
-            System.out.println(userService.getUserIdFromSecurity());
+
             try {
                 int effectedNum = questionDao.insertQuestion(question);
                 if (effectedNum > 0) {
@@ -113,6 +116,13 @@ public class QuestionService {
         }else {
             throw new GlobalException(CodeMsg.MODIFY_QUESTOPM_ID_ERROR);
         }
+    }
+    public Result<List<Question>> getQuestionByQids(List<Integer> qlist){
+        if(qlist.size()==0)
+        {
+            throw new GlobalException(CodeMsg.QIDS_LIST_IS_NULL);
+        }
+        return Result.success(questionDao.getQuestionsByQids(qlist));
     }
 
 }
