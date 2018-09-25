@@ -47,9 +47,11 @@ public class QuestionService {
     @Transactional
     public Result<Question> addQuestion(Question question) {
         if(question.getContent()!=null&&!"".equals(question.getContent())){
-            question.setRelease_time(new Date());
+            question.setReleaseTime(new Date());
             UserService userService = new UserService();
             question.setUserId(Integer.parseInt(userService.getUserIdFromSecurity()));
+            System.out.println("---------------------------------------------------------------------------------------------------------------");
+            System.out.println(userService.getUserIdFromSecurity());
             try {
                 int effectedNum = questionDao.insertQuestion(question);
                 if (effectedNum > 0) {
@@ -97,8 +99,7 @@ public class QuestionService {
      * @return 是否成功
      */
     public Result<Question> modifyQuestion(Question question){
-        if(question.getQ_id()>0){
-
+        if(question.getqId()>0){
             try {
                 int effectedNum = questionDao.updataQuestion(question);
                 if (effectedNum > 0) {
@@ -109,7 +110,6 @@ public class QuestionService {
             }catch (Exception e){
                 throw new GlobalException(new CodeMsg(-1,e.getMessage()));
             }
-
         }else {
             throw new GlobalException(CodeMsg.MODIFY_QUESTOPM_ID_ERROR);
         }

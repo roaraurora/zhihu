@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class QuestionController {
@@ -44,7 +45,7 @@ public class QuestionController {
      * */
     @ApiOperation(value = "增加一个问题",notes = "增加一个问题",httpMethod = "POST")
     @PostMapping("/addquestion")
-    public Result<Question> addQuestion( @Valid Question question){
+    public Result<Question> addQuestion(@RequestBody @Valid Question question){
         return questionService.addQuestion(question);
     }
 
@@ -60,22 +61,20 @@ public class QuestionController {
     }
 
     /**
-     * 修改评论数或者点赞数，或者浏览次数，
+     * 修改问题的评论数或者点赞数，或者浏览次数，
      * @param question   要被修改的问题对象，具体需要问题的id和对应要修改的数据，
      * @return  返回一个result  修改成功的话data为要增加的对象，失败就失败
      */
     @ApiOperation(value = "修改评论或者点赞数",notes = "修改评论或者点赞数",httpMethod = "POST")
     @PostMapping("/modifyquestion")
-    public Result<Question> modifyQuestion(@Valid Question question){
+    public Result<Question> modifyQuestion(@RequestBody @Valid Question question){
         return questionService.modifyQuestion(question);
     }
 
+    @ApiOperation(value = "得到qid列表对应的问题",notes = "得到qid列表对应的问题",httpMethod = "POST")
+    @PostMapping("/getquestionsbyqids")
+    public Result<List<Question>> getQuestionsByQids(@RequestBody @Valid Set<String> qidList){
 
-
-
-
-
-
-
-
+        return null;
+    }
 }

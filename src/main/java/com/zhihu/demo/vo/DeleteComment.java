@@ -4,36 +4,36 @@ import com.zhihu.demo.model.Comment;
 import com.zhihu.demo.model.Question;
 
 public class DeleteComment {
-    private Integer c_id;
-    private Integer q_id;
+    private Integer cId;
+    private Integer qId;
     private Integer cnum;
 
     public Comment getComment(){
         Comment comment = new Comment();
-        comment.setC_id(c_id);
+        comment.setcId(cId);
         return comment;
     }
     public Question getQuestion(){
         Question question = new Question();
-        question.setQ_id(q_id);
+        question.setqId(qId);
         question.setCnum(cnum);
         return question;
     }
 
-    public Integer getC_id() {
-        return c_id;
+    public Integer getcId() {
+        return cId;
     }
 
-    public void setC_id(Integer c_id) {
-        this.c_id = c_id;
+    public void setcId(Integer cId) {
+        this.cId = cId;
     }
 
-    public Integer getQ_id() {
-        return q_id;
+    public Integer getqId() {
+        return qId;
     }
 
-    public void setQ_id(Integer q_id) {
-        this.q_id = q_id;
+    public void setqId(Integer qId) {
+        this.qId = qId;
     }
 
     public Integer getCnum() {

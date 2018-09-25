@@ -54,7 +54,7 @@ public class CommentController {
      */
     @ApiOperation(value = "添加评论",notes = "添加一个评论,同时修改对应问题的评论数",httpMethod = "POST")
     @PostMapping("/addcomment")
-    public Result<Question> addComment(@Valid AddComment addComment){
+    public Result<Question> addComment(@RequestBody @Valid AddComment addComment){
         return commentService.addComment(addComment.getComment(),addComment.getQuestion());
     }
 
@@ -65,7 +65,7 @@ public class CommentController {
      */
     @ApiOperation(value = "删除评论",notes = "删除一个评论，同时修改对应问题的评论 ",httpMethod = "POST")
     @PostMapping("/deletecomment")
-    public Result<Question> deleteComment(@Valid DeleteComment deleteComment){
+    public Result<Question> deleteComment(@RequestBody @Valid DeleteComment deleteComment){
         return commentService.deleteComment(deleteComment.getComment(), deleteComment.getQuestion());
     }
 
@@ -76,8 +76,7 @@ public class CommentController {
      */
     @ApiOperation(value = "修改评论的点赞数",notes = "修改评论的点赞数 ",httpMethod = "POST")
     @PostMapping("/modifycomment")
-    public Result<Comment> modifyComment(@Valid Comment comment){
+    public Result<Comment> modifyComment(@RequestBody @Valid Comment comment){
         return commentService.modifyComment(comment);
     }
-
 }

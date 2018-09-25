@@ -3,27 +3,54 @@ package com.zhihu.demo.model;
 import java.util.Date;
 
 public class Comment {
-    private Integer c_id;
-    private Integer q_id;
+    private Integer cId;
+    private Integer qId;
     private  Integer userId;
-    private Date release_time;
+    private Date releaseTime;
     private String content;
     private Integer pnum;
+    private String username;
 
-    public Integer getC_id() {
-        return c_id;
+    private long totalNum;
+
+    public long getTotalNum() {
+        return totalNum;
     }
 
-    public void setC_id(Integer c_id) {
-        this.c_id = c_id;
+    public void setTotalNum(long totalNum) {
+        this.totalNum = totalNum;
     }
 
-    public Integer getQ_id() {
-        return q_id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setQ_id(Integer q_id) {
-        this.q_id = q_id;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Integer getcId() {
+        return cId;
+    }
+
+    public void setcId(Integer cId) {
+        this.cId = cId;
+    }
+
+    public Integer getqId() {
+        return qId;
+    }
+
+    public void setqId(Integer qId) {
+        this.qId = qId;
+    }
+
+    public Date getReleaseTime() {
+        return releaseTime;
+    }
+
+    public void setReleaseTime(Date releaseTime) {
+        this.releaseTime = releaseTime;
     }
 
     public Integer getUserId() {
@@ -34,13 +61,6 @@ public class Comment {
         this.userId = userId;
     }
 
-    public Date getRelease_time() {
-        return release_time;
-    }
-
-    public void setRelease_time(Date release_time) {
-        this.release_time = release_time;
-    }
 
     public String getContent() {
         return content;
@@ -56,5 +76,18 @@ public class Comment {
 
     public void setPnum(Integer pnum) {
         this.pnum = pnum;
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "cId=" + cId +
+                ", qId=" + qId +
+                ", userId=" + userId +
+                ", releaseTime=" + releaseTime +
+                ", content='" + content + '\'' +
+                ", pnum=" + pnum +
+                ", username='" + username + '\'' +
+                '}';
     }
 }

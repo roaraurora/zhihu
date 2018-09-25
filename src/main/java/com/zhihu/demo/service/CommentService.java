@@ -1,5 +1,6 @@
 package com.zhihu.demo.service;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.zhihu.demo.dao.CommentDao;
 import com.zhihu.demo.dao.QuestionDao;
@@ -39,8 +40,12 @@ public class CommentService {
      * @return  对应的评论
      */
     public List<Comment> queryCommentByQid(int q_id,int pageNum,int pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
-        return commentDao.queryCommentByQid(q_id);
+        Page page =  PageHelper.startPage(pageNum,pageSize);
+        List<Comment> commentList = commentDao.queryCommentByQid(q_id);
+        long total = page.getTotal();
+        if(commentList.size()!=0)
+            commentList.get(0).setTotalNum(total);
+        return commentList;
     }
     /**
      * 找到自己的评论及所属的问题
@@ -54,7 +59,7 @@ public class CommentService {
         List<Question> questionList = new ArrayList<>();
         while (listIterator.hasNext()){
             Comment comment = listIterator.next();
-            Question question = questionDao.queryQuestionByq_id(comment.getQ_id());
+            Question question = questionDao.queryQuestionByq_id(comment.getqId());
             questionList.add(question);
         }
         lists.add(commentList);
@@ -70,8 +75,11 @@ public class CommentService {
     @Transactional
     public Result<Question> addComment(Comment comment, Question question) {
         if (comment.getContent() != null && !"".equals(comment.getContent())) {
-            comment.setRelease_time(new Date());
+            comment.setReleaseTime(new Date());
             comment.setPnum(0);
+            System.out.println(comment.toString());
+            System.out.println(question.toString());
+            System.out.println(comment.getUserId());
             try {
                 int effectedNum = commentDao.insertComment(comment);
                 if (effectedNum > 0) {
@@ -81,7 +89,7 @@ public class CommentService {
                     throw new GlobalException(CodeMsg.INSERT_COMMENT_ERROR);
                 }
             } catch (Exception e) {
-                throw new GlobalException(new CodeMsg(-1, e.getMessage()));
+                throw new GlobalException(new CodeMsg(-2, e.getMessage()));
             }
         } else {
             throw new GlobalException(CodeMsg.COMMENT_IS_NULL);
@@ -95,9 +103,9 @@ public class CommentService {
      */
     @Transactional
     public Result<Question> deleteComment(Comment comment, Question question) {
-        if (comment.getC_id() > 0) {
+        if (comment.getcId() > 0) {
             try {
-                int effectedNum = commentDao.deleteComment(comment.getC_id());
+                int effectedNum = commentDao.deleteComment(comment.getcId());
                 if (effectedNum > 0) {
                     return questionService.modifyQuestion(question);
                 } else {
@@ -117,7 +125,7 @@ public class CommentService {
      */
     @Transactional
     public Result<Comment> modifyComment(Comment comment) {
-        if (comment.getC_id() > 0) {
+        if (comment.getcId() > 0) {
             try {
                 int effectedNum = commentDao.updataComment(comment);
                 if (effectedNum > 0) {
