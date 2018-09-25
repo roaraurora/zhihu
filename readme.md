@@ -45,3 +45,5 @@
 
 ### 重构项目 减少数据库/缓存请求 增加图片支持
 编写swagger API doc
+
+- redis 95.179.159.22 /usr/redis/redis-4.0.8/src/redis-cli

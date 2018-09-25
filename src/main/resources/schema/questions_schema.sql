@@ -10,7 +10,7 @@ create table QUESTIONS
   USER_ID      NUMBER not null,
   TITLE        VARCHAR2(100) not null,
   LNUM         NUMBER default 0 not null
-)
+);
 
 alter table QUESTIONS
   add constraint PRIMARY_KEY_QID primary key (Q_ID)

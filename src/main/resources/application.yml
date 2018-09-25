@@ -19,13 +19,17 @@ spring:
     maxWait: 10000 #获取连接的的最大等待时间
     timeBetweenEvictionRunsMillis: 6000 #空闲连接检查时间间隔
     minEvictableIdleTimeMillis: 300000 #空闲连接的最小空闲时间pompokm,
+#   TODO 9/23 outlook 邮箱似乎崩了
   mail:
     host: smtp.office365.com
-    username: ENC(/aj0rf5PWJp7Vlf/OgbsQPXaOGVOOdtr+4f6wzlhNcU=)
-    password: ENC(CtOqcyMw5DQf4YVwu9I3Y4OCQlzhd6Ho)
+#    username: ENC(/aj0rf5PWJp7Vlf/OgbsQPXaOGVOOdtr+4f6wzlhNcU=)
+#    password: ENC(CtOqcyMw5DQf4YVwu9I3Y4OCQlzhd6Ho)
+    username: ENC(dZcXwQlZRzDu/2XFykyj03oSOM9UNl9V3ttD2wo3tj0=)
+    password: ENC(XI0dvTI+fDebP++Fy7jflXfeMkpInyln)
     properties:
       mail:
         smtp:
+          auth: true
           starttls:
             enable: true
             required: true

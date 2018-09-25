@@ -8,21 +8,13 @@ create table COMMENTS
   RELEASE_TIME DATE not null,
   CONTENT      VARCHAR2(100) not null,
   PNUM         NUMBER default 0 not null
-)
+);
 
 comment on table comments
 is '用户评论表';
 
 comment on column comments.c_id
 is '评论ID';
-comment on column comments.u_id
-is '用户邮箱 登录用';
-comment on column comments.username
-is '用户名';
-comment on column comments.password
-is '用户密码';
-comment on column comments.role_id
-is '用户对应的系统角色的id';
 
 -- 主键约束
 
