@@ -33,7 +33,8 @@ public class CodeMsg {
     public static final CodeMsg MODIFY_QUESTOPM_ID_ERROR = new CodeMsg(700403, "修改问题失败，id错误");
     public static final CodeMsg MODIFY_QUESTION_ERROR = new CodeMsg(700403, "修改问题失败");
 
-
+    public static final CodeMsg QIDS_LIST_IS_NULL = new CodeMsg(700404, "问题id列表为空");
+//    public static final CodeMsg MODIFY_QUESTION_ERROR = new CodeMsg(700405, "修改问题失败");
 
 
 

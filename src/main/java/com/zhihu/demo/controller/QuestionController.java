@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -74,7 +75,17 @@ public class QuestionController {
     @ApiOperation(value = "得到qid列表对应的问题",notes = "得到qid列表对应的问题",httpMethod = "POST")
     @PostMapping("/getquestionsbyqids")
     public Result<List<Question>> getQuestionsByQids(@RequestBody @Valid Set<String> qidList){
+        List<String> list1 = new ArrayList<String>(qidList);
+        List<Integer> list2 = parseIntegersList(list1);
+        return questionService.getQuestionByQids(list2);
+    }
 
-        return null;
+
+    private List<Integer> parseIntegersList(List<String> StringList) {
+        List<Integer> IntegerList = new ArrayList<Integer>();
+        for (String x : StringList) {
+            Integer z = Integer.parseInt(x);
+            IntegerList.add(z);
+        }      	return IntegerList;
     }
 }
