@@ -39,9 +39,12 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
         JWTToken token = new JWTToken(authorization);
         Subject subject = SecurityUtils.getSubject();
         subject.login(token); //token verify失败时抛出 AuthenticationException异常
-        String newToken = JWTUtil.refreshToken(authorization);
-        if (!StringUtils.isEmpty(newToken)) {
-            httpServletResponse.setHeader("access_token", newToken);
+        String url = httpServletRequest.getRequestURI();
+        if (!url.equals("/user/logout")) {
+            String newToken = JWTUtil.refreshToken(authorization);
+            if (!StringUtils.isEmpty(newToken)) {
+                httpServletResponse.setHeader("access_token", newToken);
+            }
         }
         return true;
     }

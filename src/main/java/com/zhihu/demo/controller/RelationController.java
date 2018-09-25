@@ -1,5 +1,6 @@
 package com.zhihu.demo.controller;
 
+import com.zhihu.demo.model.Question;
 import com.zhihu.demo.result.Result;
 import com.zhihu.demo.service.RelationService;
 import com.zhihu.demo.vo.NeterVo;
@@ -97,8 +98,8 @@ public class RelationController {
     @ApiOperation(value = "收藏列表", notes = "返回用户的收藏列表 可传入页码和偏移量", httpMethod = "POST")
     @PostMapping("/collections")
     @RequiresPermissions(logical = Logical.AND, value = {"view", "post"})
-    public Result<Set> collections(@RequestBody @Valid PageVo pageVo) {
-        Set<NeterVo> set = relationService.getCollections(pageVo);
+    public Result<Set<Question>> collections(@RequestBody @Valid PageVo pageVo) {
+        Set<Question> set = relationService.getCollections(pageVo);
         return Result.success(set);
     }
 

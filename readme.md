@@ -1,18 +1,15 @@
 > 基于springboot 的前后端分离架构的在线问答社区
 作者信息 @deng @chen @sun
-## TODO LLST
-1. 邮件验证 -done 
-2. https -done 需要openssl生成一个IP方式访问的签名证书
-3. 服务器端推送 WebSocket 甚至可以做私信功能 WS+SSL = WSS 管理员可以全站广播之类的
-    - 异常处理
-    - 基于消息发布订阅 暂时看来不可行
-    - 通过stomp可以设置header
-4. 使用rabbitMQ作为消息代理(broker)
-5. docker
-6. ngix 动静分离
-7. 头像 云
-8. redis持久化
->>...
+### Real ToDo List
+1. 前后端集成
+2. 部署多个服务器演示WebSocket集群
+3. 完成注释
+4. 完成文档
+5. Nginx动静分离
+6. 头像
+7. docker
+8. Https
+
 
 **TOKEN**
 1. token有两个时间属性,一个过期时间(短),一个有效刷新时间(长)
@@ -40,6 +37,9 @@
 
 - **点赞**
 用zset实现 支持排序
+
+- **收藏**
+收藏接口因前端的实现问题需要返回一个完整的问题 导致失去了redis的优势 反而引入了数据库查询
 
 - 回复提醒
 
