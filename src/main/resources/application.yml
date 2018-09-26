@@ -11,7 +11,7 @@ server:
 spring:
   druid:
     driverClassName: oracle.jdbc.OracleDriver
-    url: jdbc:oracle:thin:@10.100.66.57:1521:XE
+    url: jdbc:oracle:thin:@localhost:1521:XE
     username: zhihu
     password: zhihu
     maxActive: 30 #最小连接数
