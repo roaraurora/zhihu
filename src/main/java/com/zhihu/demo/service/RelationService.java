@@ -152,7 +152,6 @@ public class RelationService {
 
 
     public void setCollect(RelVo collectVo) {
-        //TODO 等加上 question title字段
         String userId = userService.getUserIdFromSecurity();
         String questionId = collectVo.getSubjectId();
 //        String title = questionService.getQuestionById(questionId).get();

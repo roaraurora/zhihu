@@ -5,9 +5,6 @@ import javax.validation.constraints.NotNull;
 
 public class GetMessageVo {
     @NotNull
-    private String senderId;
-
-    @NotNull
     private String receiverId;
 
     @Max(5)
@@ -17,18 +14,9 @@ public class GetMessageVo {
     @Override
     public String toString() {
         return "GetMessageVo{" +
-                "senderId='" + senderId + '\'' +
                 ", receiverId='" + receiverId + '\'' +
                 ", offset='" + offset + '\'' +
                 '}';
-    }
-
-    public String getSenderId() {
-        return senderId;
-    }
-
-    public void setSenderId(String senderId) {
-        this.senderId = senderId;
     }
 
     public String getReceiverId() {

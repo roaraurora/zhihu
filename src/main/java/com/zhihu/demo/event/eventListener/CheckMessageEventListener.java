@@ -34,9 +34,9 @@ public class CheckMessageEventListener {
 
     @EventListener(CheckMessageEvent.class)
     public void notifyUser(CheckMessageEvent event) {
-        logger.info("监听到CheckMessageEvent事件 检查并发送用户{}的未读消息",event.getUserId());
         List<RespMessageVo> respList = redisService.getList(UserKey.messageKey, event.getUserId(), RespMessageVo.class);
         if (respList != null && respList.size() != 0) {
+            logger.info("监听到CheckMessageEvent事件 检查并发送用户{} {}条未读消息",event.getUserId(),respList.size());
             messageService.sendListToUser(event.getSessionId(), respList);
             redisService.delete(UserKey.messageKey, event.getUserId()); //将未读消息缓存删除
         }

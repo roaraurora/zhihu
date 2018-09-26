@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.security.Principal;
 import java.util.List;
 
+
 @Service
 public class MessageService {
 
@@ -76,6 +77,7 @@ public class MessageService {
 
     public void sendToUser(String sessionId, RespMessageVo respMessageVo) {
         //发送一个消息给用户 TODO 如何判断消息是否发送成功
+        logger.info("send message => "+respMessageVo);
         String routingKey = getTopicRoutingKey("demo", sessionId); //"demo-user"+sessionId
         amqpTemplate.convertAndSend("amq.topic", routingKey, JSON.toJSONString(respMessageVo));
     }
@@ -85,6 +87,7 @@ public class MessageService {
         String routingKey = getTopicRoutingKey("demo", sessionId); //"demo-user"+sessionId
         logger.info("发送消息[{}]，路由键[{}]", sessionId, sessionId, routingKey);
         amqpTemplate.convertAndSend("amq.topic", routingKey, JSON.toJSONString(respList));
+//        amqpTemplate.convertAndSend("amq.topic", routingKey, respList);
     }
 
     private String getTopicRoutingKey(String actualDestination, String sessionId) {
@@ -93,7 +96,7 @@ public class MessageService {
 
     public List<HistoryMessageVo> loadHistory(GetMessageVo getMessageVo) {
         int offset = getMessageVo.getOffset();
-        String senderId = getMessageVo.getSenderId();
+        String senderId = userService.getUserIdFromSecurity();
         String receiverId = getMessageVo.getReceiverId();
         return redisService.getHistory(Integer.parseInt(senderId), Integer.parseInt(receiverId), offset, HistoryMessageVo.class);
     }
