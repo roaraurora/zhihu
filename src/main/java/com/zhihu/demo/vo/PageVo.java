@@ -10,7 +10,7 @@ public class PageVo {
     private int page;
 
     @NotNull
-    @Min(0)
+    @Min(-1)
     private int offset;
 
     public int getPage() {

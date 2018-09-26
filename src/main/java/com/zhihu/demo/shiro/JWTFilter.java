@@ -44,6 +44,8 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
             String newToken = JWTUtil.refreshToken(authorization);
             if (!StringUtils.isEmpty(newToken)) {
                 httpServletResponse.setHeader("access_token", newToken);
+                httpServletResponse.setHeader("Access-Control-Expose-Headers", "*");
+                //需要通过Access-Control-Expose-Headers字段才能暴露自定义header给js
             }
         }
         return true;

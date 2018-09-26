@@ -3,14 +3,14 @@
 <mapper namespace="com.zhihu.demo.dao.QuestionDao">
 
     <select id="queryQuestion" resultType="com.zhihu.demo.model.Question">
-        SELECT q_id,release_time,content,pnum,cnum,title,lnum,username
+        SELECT q_id,release_time,content,pnum,cnum,title,lnum,username,USERS.USER_ID
         from questions,users
         WHERE questions.user_id=users.user_id
         order by release_time
         desc
     </select>
     <select id="getQuestionsByQids" resultType="com.zhihu.demo.model.Question">
-        SELECT q_id,release_time,content,pnum,cnum,title,lnum,username
+        SELECT q_id,release_time,content,pnum,cnum,title,lnum,username,USERS.USER_ID
         from questions,USERS WHERE questions.user_id=users.user_id and q_id in
         <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
         #{item}
@@ -31,7 +31,7 @@
     </select>
     <!--useGeneratedKeys="true" keyProperty="q_id"-->
     <!--keyColumn="q_id"-->
-    <insert id="insertQuestion" parameterType="com.zhihu.demo.model.Question">
+    <insert id="insertQuestion" parameterType="com.zhihu.demo.model.Question" useGeneratedKeys="false">
         INSERT INTO
         questions(release_time,content,user_id,title)
         VALUES

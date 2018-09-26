@@ -6,6 +6,7 @@ import com.zhihu.demo.result.Result;
 import com.zhihu.demo.util.ConstantBean;
 import com.zhihu.demo.vo.NeterVo;
 import com.zhihu.demo.vo.PageVo;
+import com.zhihu.demo.vo.QuestionVo;
 import com.zhihu.demo.vo.RelVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -124,7 +125,7 @@ public class RelationService {
     /**
      * 获得id对应用户对neterVo的关注时间 为null时id不关注neterVo
      */
-    public double isFollowsTime(String id, NeterVo neterVo) {
+    public Double isFollowsTime(String id, NeterVo neterVo) {
         return relRedisService.zscore(UserKey.followKey, id, neterVo);
     }
 

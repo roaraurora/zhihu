@@ -1,5 +1,7 @@
 package com.zhihu.demo.model;
 
+import com.zhihu.demo.vo.QuestionVo;
+
 import java.util.Date;
 
 public class Question {

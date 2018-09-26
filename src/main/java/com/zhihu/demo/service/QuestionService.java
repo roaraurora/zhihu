@@ -120,7 +120,8 @@ public class QuestionService {
     public Result<List<Question>> getQuestionByQids(List<Integer> qlist){
         if(qlist.size()==0)
         {
-            throw new GlobalException(CodeMsg.QIDS_LIST_IS_NULL);
+//            throw new GlobalException(CodeMsg.QIDS_LIST_IS_NULL);
+           return Result.success(null);
         }
         return Result.success(questionDao.getQuestionsByQids(qlist));
     }

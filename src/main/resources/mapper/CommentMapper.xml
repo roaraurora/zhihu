@@ -20,7 +20,7 @@
     </select>
     <!--useGeneratedKeys="true" keyProperty="c_id"-->
     <!--keyColumn="c_id"-->
-    <insert id="insertComment" parameterType="com.zhihu.demo.model.Comment">
+    <insert id="insertComment" parameterType="com.zhihu.demo.model.Comment" useGeneratedKeys="false">
         INSERT INTO
         comments(q_id,user_id,release_time,content,pnum)
         VALUES

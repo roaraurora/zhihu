@@ -12,6 +12,7 @@ public class RelVo {
     @NotNull
     private String subjectId;
 
+
     @NotNull
     private boolean rel;
 
@@ -29,5 +30,13 @@ public class RelVo {
 
     public void setRel(boolean rel) {
         this.rel = rel;
+    }
+
+    @Override
+    public String toString() {
+        return "RelVo{" +
+                "subjectId='" + subjectId + '\'' +
+                ", rel=" + rel +
+                '}';
     }
 }

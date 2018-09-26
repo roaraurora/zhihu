@@ -3,8 +3,10 @@ package com.zhihu.demo.controller;
 import com.zhihu.demo.model.Question;
 import com.zhihu.demo.result.Result;
 import com.zhihu.demo.service.RelationService;
+import com.zhihu.demo.util.WrapUtil;
 import com.zhihu.demo.vo.NeterVo;
 import com.zhihu.demo.vo.PageVo;
+import com.zhihu.demo.vo.QuestionVo;
 import com.zhihu.demo.vo.RelVo;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.Logical;
@@ -32,6 +34,13 @@ public class RelationController {
 
     private RelationService relationService;
 
+    private WrapUtil wrapUtil;
+
+    @Autowired
+    public void setWrapUtil(WrapUtil wrapUtil) {
+        this.wrapUtil = wrapUtil;
+    }
+
     @Autowired
     public void setRelationService(RelationService relationService) {
         this.relationService = relationService;
@@ -57,6 +66,7 @@ public class RelationController {
     @PostMapping("/follow")
     @RequiresPermissions(logical = Logical.AND, value = {"view", "post"})
     public Result<Boolean> followUser(@RequestBody @Valid RelVo followVo) {
+        logger.info("关注relVo =>"+followVo);
         relationService.setFollowUser(followVo);
         return Result.success(true);
     }
@@ -98,9 +108,11 @@ public class RelationController {
     @ApiOperation(value = "收藏列表", notes = "返回用户的收藏列表 可传入页码和偏移量", httpMethod = "POST")
     @PostMapping("/collections")
     @RequiresPermissions(logical = Logical.AND, value = {"view", "post"})
-    public Result<List<Question>> collections(@RequestBody @Valid PageVo pageVo) {
+    public Result<List<QuestionVo>> collections(@RequestBody @Valid PageVo pageVo) {
         Result<List<Question>> set = relationService.getCollections(pageVo);
-        return set;
+        List<Question> list = set.getData();
+        List<QuestionVo> voList = wrapUtil.wrap(list);
+        return Result.success(voList);
     }
 
 }
