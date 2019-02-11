@@ -26,6 +26,11 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author 邓超
+ * @description 私信controller
+ * @create 2018/9/18
+ */
 @Controller
 public class MessageController {
 

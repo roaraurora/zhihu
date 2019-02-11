@@ -22,6 +22,12 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+
+/**
+ * @author 邓超
+ * @description shiro realm
+ * @create 2018/9/15
+ */
 @Service
 public class MyShiroRealm extends AuthorizingRealm {
 

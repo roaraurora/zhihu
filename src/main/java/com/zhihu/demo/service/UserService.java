@@ -30,6 +30,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * @author 邓超
+ * @description 用户服务类
+ * @create 2018/9/11
+ */
 @Service
 public class UserService {
 

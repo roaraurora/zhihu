@@ -11,6 +11,11 @@ import org.springframework.context.annotation.Configuration;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author 邓超
+ * @description RabbitMQ配置类
+ * @create 2018/9/20
+ */
 @Configuration
 public class    RabbitConfig {
 

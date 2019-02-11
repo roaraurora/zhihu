@@ -9,6 +9,11 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * @author 邓超
+ * @description 拦截器
+ * @create 2018/9/18
+ */
 public class MyHandlerInterceptor extends HandlerInterceptorAdapter {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());

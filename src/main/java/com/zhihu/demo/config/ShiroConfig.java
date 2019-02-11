@@ -22,6 +22,11 @@ import javax.servlet.Filter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * @author 邓超
+ * @description Apache shiro配置类
+ * @create 2018/9/13
+ */
 @Configuration
 @Order(2)
 public class ShiroConfig {

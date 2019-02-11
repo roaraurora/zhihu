@@ -1,5 +1,10 @@
 package com.zhihu.demo.result;
 
+/**
+ * @author 邓超
+ * @description rest返回结果封装类
+ * @create 2018/9/12
+ */
 public class Result<T> {
     private int code;
     private String msg;

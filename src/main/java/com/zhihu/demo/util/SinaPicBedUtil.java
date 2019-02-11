@@ -33,9 +33,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.CRC32;
 
-/**
- * @author 王小明
- */
 public class SinaPicBedUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SinaPicBedUtil.class);

@@ -15,6 +15,11 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.Map;
 
+/**
+ * @author 邓超
+ * @description 邮件服务类
+ * @create 2018/9/19
+ */
 @Service
 public class MailService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());

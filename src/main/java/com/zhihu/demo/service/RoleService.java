@@ -7,6 +7,12 @@ import com.zhihu.demo.result.CodeMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
+/**
+ * @author 邓超
+ * @description 用户角色服务类
+ * @create 2018/9/11
+ */
 @Service
 public class RoleService {
 

@@ -12,6 +12,11 @@ import redis.clients.jedis.JedisPool;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author 邓超
+ * @description Redis服务类
+ * @create 2018/9/15
+ */
 @Service
 public class RedisService {
 

@@ -16,6 +16,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+/**
+ * @author 邓超
+ * @description 邮件controller
+ * @create 2018/9/18
+ */
 @RestController
 @RequestMapping("/mail")
 public class MailController {

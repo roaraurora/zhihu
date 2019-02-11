@@ -15,6 +15,12 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * @author 邓超
+ * @description 包装工具类
+ * @create 2018/9/19
+ */
 @Component
 public class WrapUtil {
     private RelRedisService relRedisService;

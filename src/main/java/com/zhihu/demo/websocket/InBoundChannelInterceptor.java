@@ -27,6 +27,12 @@ import java.security.Principal;
 /**
  * 可以在Message对象在发送到MessageChannel前后查看修改此值，也可以在MessageChannel接收MessageChannel对象前后修改此值
  */
+
+/**
+ * @author 邓超
+ * @description WebSocket拦截器类
+ * @create 2018/9/18
+ */
 @Component
 public class InBoundChannelInterceptor implements ChannelInterceptor {
 
@@ -69,7 +75,7 @@ public class InBoundChannelInterceptor implements ChannelInterceptor {
         StompCommand command = accessor != null ? accessor.getCommand() : null;
         String sessionId = accessor != null ? accessor.getSessionId() : null;
         if (command != null) {
-            logger.info(this.getClass().getCanonicalName() + " 消息发送前");
+            logger.info(this.getClass().getCanonicalName() + " 消息发送前"+command);
             if (StompCommand.CONNECT.equals(command)) {
                 //绑定securityManager到ThreadContext
                 ThreadContext.bind(securityManager);
@@ -88,6 +94,10 @@ public class InBoundChannelInterceptor implements ChannelInterceptor {
             if (StompCommand.SUBSCRIBE.equals(command)) {
                 //处理用户订阅消息的权限验证
             }
+            if (StompCommand.SEND.equals(command)) {
+                logger.info(this.getClass().getCanonicalName() + "文本消息发送: " + accessor.getUser().getName() + " " + sessionId);
+                applicationContext.publishEvent(new CheckMessageEvent("", accessor.getUser().getName(), sessionId)); //发布检查message的事件
+            }
         }
         return message; //return null会使得建立了websocket连接但无法发送数据
     }
@@ -102,14 +112,14 @@ public class InBoundChannelInterceptor implements ChannelInterceptor {
             Principal principal = accessor.getUser();
             String userId = principal != null ? principal.getName() : null;
             if (StompCommand.SUBSCRIBE.equals(stompCommand)) {
-                logger.info(this.getClass().getCanonicalName() + "订阅消息发送" + sent);
                 applicationContext.publishEvent(new MyApplicationEvent(principal, userId));
                 String sessionId = accessor.getSessionId();
-                applicationContext.publishEvent(new CheckMessageEvent("", userId,sessionId)); //发布检查message的事件
+                logger.info(this.getClass().getCanonicalName() + "订阅消息发送" + sent+" "+userId+" "+sessionId);
+//                applicationContext.publishEvent(new CheckMessageEvent("", userId,sessionId)); //发布检查message的事件
             }
             if (StompCommand.DISCONNECT.equals(stompCommand)) {
                 logger.info(this.getClass().getCanonicalName() + "用户断开连接成功");
-                redisService.delete(ItemKey.getById,userId);//用户断开连接时删除用户信息
+                redisService.delete(ItemKey.getById, userId);//用户断开连接时删除用户信息
             }
         }
     }

@@ -5,6 +5,12 @@ import org.thymeleaf.util.StringUtils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
+/**
+ * @author 邓超
+ * @description 验证工具类
+ * @create 2018/9/19
+ */
 public class ValidatorUtil {
 
     //不含":" 不含"-"

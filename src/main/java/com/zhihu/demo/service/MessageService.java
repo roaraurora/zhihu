@@ -21,6 +21,11 @@ import java.security.Principal;
 import java.util.List;
 
 
+/**
+ * @author 邓超
+ * @description 即时通讯服务类
+ * @create 2018/9/19
+ */
 @Service
 public class MessageService {
 
@@ -65,11 +70,12 @@ public class MessageService {
         String sessionId = redisService.get(ItemKey.getById, subjectId, String.class); //接收者的sessionId
         if (StringUtils.isEmpty(sessionId)) {
             //未命中redis时 缓存消息信息
+            logger.info("未命中redis websocket session");
             redisService.rpush(UserKey.messageKey, subjectId, respMessageVo);
         } else {
             //根据sessionId 发送消息
+            logger.info("命中了redis websocket session");
             sendToUser(sessionId, respMessageVo);
-//        simpMessagingTemplate.convertAndSendToUser(userId, "/queue/getResponse", redisService.beanToString(respMessageVo));
         }
         HistoryMessageVo historyMessageVo = new HistoryMessageVo(message, sendTime, subjectId);
         redisService.addHistory(Integer.parseInt(userId), Integer.parseInt(subjectId), historyMessageVo); //存入历史记录

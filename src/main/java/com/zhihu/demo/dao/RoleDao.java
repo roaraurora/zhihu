@@ -6,6 +6,11 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author 邓超
+ * @description 角色Dao
+ * @create 2018/9/18
+ */
 @Mapper
 @Component
 public interface RoleDao {

@@ -18,6 +18,12 @@ import org.springframework.stereotype.Component;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
+
+/**
+ * @author 邓超
+ * @description JWT工具类
+ * @create 2018/9/19
+ */
 @Component
 public class JWTUtil {
 

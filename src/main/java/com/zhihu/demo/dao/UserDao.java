@@ -4,6 +4,11 @@ import com.zhihu.demo.model.User;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author 邓超
+ * @description 用户DAO
+ * @create 2018/9/15
+ */
 @Mapper
 @Component
 public interface UserDao {

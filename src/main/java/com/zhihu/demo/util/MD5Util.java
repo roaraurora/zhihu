@@ -9,6 +9,12 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 
+
+/**
+ * @author 邓超
+ * @description MD5工具类
+ * @create 2018/9/19
+ */
 @Component
 public class MD5Util {
 

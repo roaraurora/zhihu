@@ -17,6 +17,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+
+/**
+ * @author 邓超
+ * @description shiro filter
+ * @create 2018/9/15
+ */
 public class JWTFilter extends BasicHttpAuthenticationFilter {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());

@@ -16,6 +16,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * @author 邓超
+ * @description 全局异常处理器
+ * @create 2018/9/13
+ */
 @RestControllerAdvice //可以指定范围
 public class GlobalExceptionHandler {
 

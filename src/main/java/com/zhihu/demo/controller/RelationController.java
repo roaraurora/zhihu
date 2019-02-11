@@ -22,9 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
-
 /**
- * 点赞 关注 邀请 收藏
+ * @author 邓超
+ * @description 点赞 关注 邀请 收藏controller
+ * @create 2018/9/18
  */
 @RestController
 @RequestMapping("/relation")

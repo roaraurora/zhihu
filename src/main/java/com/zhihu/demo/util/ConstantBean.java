@@ -2,6 +2,12 @@ package com.zhihu.demo.util;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+
+/**
+ * @author 邓超
+ * @description 常量配置类
+ * @create 2018/9/13
+ */
 @ConfigurationProperties(prefix = "com.zhihu.demo.constant")
 public class ConstantBean {
 

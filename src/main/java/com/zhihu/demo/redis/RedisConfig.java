@@ -3,6 +3,11 @@ package com.zhihu.demo.redis;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author 邓超
+ * @description Redis配置类
+ * @create 2018/9/15
+ */
 @Component
 @ConfigurationProperties(prefix = "redis")
 public class RedisConfig {

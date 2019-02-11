@@ -16,6 +16,11 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
+/**
+ * @author 邓超
+ * @description RabbitHandler
+ * @create 2018/9/18
+ */
 @Component
 public class RabbitHandler {
 

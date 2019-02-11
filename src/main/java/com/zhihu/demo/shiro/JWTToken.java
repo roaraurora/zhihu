@@ -2,6 +2,12 @@ package com.zhihu.demo.shiro;
 
 import org.apache.shiro.authc.AuthenticationToken;
 
+
+/**
+ * @author 邓超
+ * @description 自定义token
+ * @create 2018/9/15
+ */
 public class JWTToken implements AuthenticationToken {
 
     private String token;

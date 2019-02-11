@@ -12,6 +12,11 @@ import redis.clients.jedis.Transaction;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * @author 邓超
+ * @description Redis关系服务类
+ * @create 2018/9/15
+ */
 @Service
 public class RelRedisService {
     private JedisPool jedisPool;

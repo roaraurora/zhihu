@@ -4,6 +4,12 @@ import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEByteEncryptor;
 import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
 
+
+/**
+ * @author 邓超
+ * @description 加密工具类
+ * @create 2018/9/19
+ */
 public class JasyptUtil {
 
     /**

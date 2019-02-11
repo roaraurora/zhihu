@@ -12,7 +12,11 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-
+/**
+ * @author 邓超
+ * @description 检查私信消息事件监听器
+ * @create 2018/9/18
+ */
 @Component
 public class CheckMessageEventListener {
 

@@ -1,5 +1,10 @@
 package com.zhihu.demo.model;
 
+/**
+ * @author 邓超
+ * @description 角色model
+ * @create 2018/9/13
+ */
 public class Role {
     private int roleId;
     private String roleName;

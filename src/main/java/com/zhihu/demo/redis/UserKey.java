@@ -1,5 +1,10 @@
 package com.zhihu.demo.redis;
 
+/**
+ * @author 邓超
+ * @description Redis User key 前缀
+ * @create 2018/9/15
+ */
 public class UserKey extends BasePrefix {
     private UserKey(String prefix) {
         //访问权限设置为private 防止被其他类实例化

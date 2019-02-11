@@ -1,5 +1,10 @@
 package com.zhihu.demo.redis;
 
+/**
+ * @author 邓超
+ * @description  前缀抽象类
+ * @create 2018/9/15
+ */
 public class BasePrefix implements KeyPrefix {
 
 

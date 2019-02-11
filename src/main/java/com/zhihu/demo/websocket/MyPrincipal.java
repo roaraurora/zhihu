@@ -4,6 +4,12 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.security.Principal;
 
+
+/**
+ * @author 邓超
+ * @description 自定义WebSocket对象类
+ * @create 2018/9/19
+ */
 public class MyPrincipal implements Principal {
     private String name;
 

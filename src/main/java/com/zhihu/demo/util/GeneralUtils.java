@@ -8,6 +8,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.UUID;
 
+
+/**
+ * @author 邓超
+ * @description 通用工具类
+ * @create 2018/9/19
+ */
 public class GeneralUtils {
 	
     /**

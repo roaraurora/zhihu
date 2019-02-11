@@ -10,6 +10,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 
+/**
+ * @author 邓超
+ * @description 阿里druid连接池配置类
+ * @create 2018/9/13
+ */
 @Configuration
 public class DruidConfig {
 

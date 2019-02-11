@@ -25,6 +25,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
+/**
+ * @author 邓超
+ * @description 用户controller
+ * @create 2018/9/16
+ */
 @RestController
 @RequestMapping("/user")
 public class UserController {

@@ -11,6 +11,11 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 
+/**
+ * @author 邓超
+ * @description WebSocket配置类
+ * @create 2018/9/16
+ */
 @Configuration
 @EnableWebSocketMessageBroker //使用stomp协议来传输基于消息代理的消息
 @Order(1)

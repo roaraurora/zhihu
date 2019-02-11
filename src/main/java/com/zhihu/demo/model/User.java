@@ -1,5 +1,9 @@
 package com.zhihu.demo.model;
-
+/**
+ * @author 邓超
+ * @description 用户model
+ * @create 2018/9/13
+ */
 public class User {
     private Integer userId;
     private String email;

@@ -2,6 +2,11 @@ package com.zhihu.demo.event;
 
 import org.springframework.context.ApplicationEvent;
 
+/**
+ * @author 邓超
+ * @description 检查消息事件
+ * @create 2018/9/18
+ */
 public class CheckMessageEvent extends ApplicationEvent {
 
     private String userId;

@@ -19,6 +19,11 @@ import javax.servlet.http.HttpServletResponse;
  * 但这个异常会被Servlet容器捕获到 Servlet容器再将异常转发给注册好的异常处理映射 /error 做处理
  * 而Servlet容器打印了异常的堆栈信息 暂时没找到更好的办法阻止打印堆栈
  */
+/**
+ * @author 邓超
+ * @description 异常处理
+ * @create 2018/9/18
+ */
 @RestController
 public class ShiroExceptionHandler implements ErrorController {
 
